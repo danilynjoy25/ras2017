@@ -1,4 +1,4 @@
-@extends('layouts.projects')
+@extends('layouts.WMS')
 @section('title')
 <title>Weather Monitoring - Tables </title>
 @endsection
@@ -68,7 +68,7 @@
 					  <td>{{ $data->c_sensed_parameter }}</td>
 					  <td>{{ $data->c_value }}</td>
 					</tr>
-				  @endforeach	
+				  @endforeach
 				  </tbody>
 				</table>
 			  </div>
@@ -76,6 +76,6 @@
 			<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 		  </div>
 		</div>
-  
+
 	</div>
 @endpush

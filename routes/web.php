@@ -16,9 +16,7 @@ Route::get('/', function () {
 });
 Route::get('wms', 'WMSController@summary');
 
-Route::get('wms/charts', function () {
-    return view('wms.charts');
-});
+Route::get('wms/charts', 'WMSController@chart'); 
 
 Route::get('wms/tables', 'WMSController@tables');
 

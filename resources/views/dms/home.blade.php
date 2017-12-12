@@ -1,4 +1,4 @@
-@extends('layouts.projects')
+@extends('layouts.DMS')
 @section('content')
 <div class="col-12">
   <h1>Dam Monitoring Page</h1>

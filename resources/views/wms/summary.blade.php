@@ -1,4 +1,4 @@
-@extends('layouts.projects')
+@extends('layouts.WMS')
 @section('title')
 <title>Weather Monitoring Site</title>
 @endsection
@@ -34,7 +34,14 @@
 @endpush
 @push('content')
   <div class="col-12">
-    <h1>Weather Monitoring Page </h1>
-    <p>This is an example of a blank page that you can use as a starting point for creating new ones.</p>
+        <div class="card mb-3">
+            <div class="card-header"><i class="fa fa-area-chart"></i> WMS Summary</div>
+                <div class="card-body">
+                  <canvas id="myBarChart" width="100%" height="30"></canvas>
+                </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+    @include('wms.summaryjs')
+    </div>
   </div>
 @endpush

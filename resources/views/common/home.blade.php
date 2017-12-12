@@ -1,11 +1,11 @@
 @extends('layouts.home')
 @section('content')
 <!-- Page Heading -->
-<h1 class="my-4">Sensors site
+<!--<h1 class="my-4">Sensors site
   <small>2017</small>
-</h1>
+</h1>-->
 
-<div class="row">
+<div class="row" style = "overflow: hidden; padding-top: 50px;" >
   <div class="col-lg-6 portfolio-item">
     <div class="card h-100">
       <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
