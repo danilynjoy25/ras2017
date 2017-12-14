@@ -8,11 +8,11 @@ class Sensor extends Model
 {
   protected $table = 't_sensors';
 
-  public function users() {
-    return $this->belongsTo('Project');
+  public function project() {
+    return $this->belongsTo('App\Models\Project');
   }
 
   public function sensor_data() {
-    return $this->hasMany('Sensor_data');
+    return $this->hasMany('App\Models\Sensor_data');
   }
 }

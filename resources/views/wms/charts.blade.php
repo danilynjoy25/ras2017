@@ -34,14 +34,7 @@
 @endpush
 @push('content')
     <div class="col-12">
-        <div class="card mb-3">
-            <div class="card-header"><i class="fa fa-area-chart"></i> WMS Line Chart</div>
-                <div class="card-body">
-                  <canvas id="myChart" width="100%" height="30"></canvas>
-                </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
-        @include('wms.chartjs')
+        @include('wms.highchartjsmain')
     <div class="container-fluid">
       <div class="card card-login mx-auto mt-5" style = "width: 500px; ">
         <div class="card-header"><i class="fa fa-fw fa-wrench"></i> Chart Settings</div>
@@ -49,23 +42,15 @@
             <ul class="list-inline mb-0" style = "overflow:hidden;">
               <li class="nav-item">
                 Station:
-                <select class="selectpicker" style="float:right;">
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
+                  {{ Form::open(array('style'=> 'float:right')) }}
+                  {!! Form::select('sensor', $stations, null, ['placeholder'=>'Sensor']) !!}
+                  {{ Form::close() }}
               </li>
               <li class="nav-item">
                 Parameter:
-                <select class="selectpicker" style="float:right;">
-                  <option>Temperature</option>
-                  <option>Humidity</option>
-                  <option>Air pressure</option>
-                  <option>Light</option>
-                  <option>Wind direction</option>
-                  <option>Wind speed</option>
-                  <option>Rain intensity</option>
-                </select>
+                {{ Form::open(array('style'=> 'float:right')) }}
+                {!! Form::select('parameter', $parameters, null, ['placeholder'=>'Parameter']) !!}
+                {{ Form::close() }}
               </li>
               <li class="nav-item">
                 Filter by:
@@ -82,8 +67,7 @@
                   <option>Area</option>
                   <option>Bar</option>
                 </select>
-              </li>
-
+            </li>
             </ul>
           </div>
       <div class="card-footer small text-muted">
@@ -92,5 +76,4 @@
       </div>
     </div>
   </div> <!-- col-12 -->
-
 @endpush

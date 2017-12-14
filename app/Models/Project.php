@@ -9,10 +9,15 @@ class Project extends Model
     protected $table = 't_projects';
 
     public function users() {
-      return $this->hasMany('User');
+      return $this->hasMany('App\Models\User');
+    }
+
+    public function data() {
+      return $this->hasManyThrough('App\Models\Sensor_data', 'App\Models\Sensor');
     }
 
     public function sensors() {
-      return $this->hasMany('Sensor');
+      return $this->hasMany('App\Models\Sensor');
     }
+
 }
