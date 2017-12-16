@@ -1,7 +1,7 @@
 <script>
 // -- Area Chart Example
 var data_value = <?php echo $value; ?>;
-var data_time = <?php echo $time; ?>;
+
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
   type: 'line',

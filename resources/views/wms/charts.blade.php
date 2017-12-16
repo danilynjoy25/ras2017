@@ -35,45 +35,5 @@
 @push('content')
     <div class="col-12">
         @include('wms.highchartjsmain')
-    <div class="container-fluid">
-      <div class="card card-login mx-auto mt-5" style = "width: 500px; ">
-        <div class="card-header"><i class="fa fa-fw fa-wrench"></i> Chart Settings</div>
-          <div class="card-body">
-            <ul class="list-inline mb-0" style = "overflow:hidden;">
-              <li class="nav-item">
-                Station:
-                  {{ Form::open(array('style'=> 'float:right')) }}
-                  {!! Form::select('sensor', $stations, null, ['placeholder'=>'Sensor']) !!}
-                  {{ Form::close() }}
-              </li>
-              <li class="nav-item">
-                Parameter:
-                {{ Form::open(array('style'=> 'float:right')) }}
-                {!! Form::select('parameter', $parameters, null, ['placeholder'=>'Parameter']) !!}
-                {{ Form::close() }}
-              </li>
-              <li class="nav-item">
-                Filter by:
-                <select class="selectpicker" style="float:right;">
-                  <option>Day</option>
-                  <option>Month</option>
-                  <option>Year</option>
-                </select>
-              </li>
-              <li class="nav-item">
-                Format:
-                <select class="selectpicker" style="float:right;">
-                  <option>Line</option>
-                  <option>Area</option>
-                  <option>Bar</option>
-                </select>
-            </li>
-            </ul>
-          </div>
-      <div class="card-footer small text-muted">
-        <a class="btn btn-primary btn-block" href="#">Update</a>
-      </div>
-      </div>
-    </div>
   </div> <!-- col-12 -->
 @endpush

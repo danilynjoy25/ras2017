@@ -16,55 +16,77 @@ class WMSController extends Controller
 
     public function tables()
     {
+       //Display all sensor data
         $sensor_data = \App\Models\Sensor_data::all();
 	      return view('wms.tables', compact('sensor_data'));
     }
 
     public function chart()
     {
-      $value = DB::table('t_sensor_data')
-          ->where([
-            ['c_sensor', '=', '0'],
-            ['c_sensed_parameter', '=', 'temperature']
-          ])
-          ->select('c_value')
-          ->orderBy('c_time')
-          ->get()->toArray();
-      $value = array_column($value, 'c_value');
+      //Get station and parameter from form
+      $station = request('station');
+      $parameter = request('parameter');
 
-      $time = DB::table('t_sensor_data')
+      //Get chart data (x, y) as array(key, value)
+      $data = DB::table('t_sensor_data')
           ->where([
-            ['c_sensor', '=', '0'],
-            ['c_sensed_parameter', '=', 'temp']
+            ['c_sensor', '=', $station],
+            ['c_sensed_parameter', '=', $parameter]
           ])
-          ->select('c_time')
           ->orderBy('c_time')
-          ->get()->toArray();
-      $time = array_column($time, 'c_time');
+          ->pluck('c_value', 'c_time')
+          ->toArray();
 
-      //Chart settings
-      $stations= DB::table('t_sensor_data')
+      //Get first and last keys of $data
+      $keys = array_keys($data);
+      $last_key = end($keys);
+
+      reset($data);
+      $first_key = key($data);
+
+      //Get chart data with y in UNIX time format [x,y]
+      $dataFinal = array();
+      foreach ($data as $key => $val) {
+        $dataFinal[] = array(strtotime($key)*1000, $val);
+      }
+
+      //List stations and parameters
+      //pluck(key, value)
+      //Form-> name=value value=key
+      $stationsArray= DB::table('t_sensor_data')
           ->join('t_sensors', 't_sensors.c_id', '=', 't_sensor_data.c_sensor')
           ->where('t_sensors.c_type', '=', 'WMS')
           ->pluck('t_sensors.c_name', 't_sensors.c_id');
 
-      $parameters = DB::table('t_sensor_data')
+      $parametersArray = DB::table('t_sensor_data')
           ->join('t_sensors', 't_sensors.c_id', '=', 't_sensor_data.c_sensor')
           ->where('t_sensors.c_type', '=', 'WMS')
           ->groupBy('c_sensed_parameter')
           ->distinct()
-          ->pluck('c_sensed_parameter', 'c_time');
+          ->pluck('c_sensed_parameter', 'c_sensed_parameter');
+
+      $stationName = DB::table('t_sensors')
+          ->where('c_id','=',$station)
+          ->select('c_name')
+          ->value('c_name');
+
+      //Get last data's date
+      $lastDate = DB::table('t_sensor_data')
+          ->orderBy('c_time', 'desc')
+          ->select('c_time')
+          ->limit(1)
+          ->value('c_time');
+      $lastDate = date("d F Y H:i:s", strtotime($lastDate));
 
       return view('wms.charts')
-          ->with('value',json_encode($value,JSON_NUMERIC_CHECK))
-          ->with('time',json_encode($time,JSON_NUMERIC_CHECK))
-          ->with('stations', $stations)
-          ->with('parameters', $parameters);
-    }
-
-    public function create()
-    {
-
+          ->with('stationsArray', $stationsArray)
+          ->with('parametersArray', $parametersArray)
+          ->with('station', json_encode($station,JSON_NUMERIC_CHECK))
+          ->with('stationName', json_encode($stationName,JSON_NUMERIC_CHECK))
+          ->with('parameter', json_encode($parameter,JSON_NUMERIC_CHECK))
+          ->with('valueArray', json_encode($data,JSON_NUMERIC_CHECK))
+          ->with('dataFinal', json_encode($dataFinal,JSON_NUMERIC_CHECK))
+          ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK));
     }
 
 }
