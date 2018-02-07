@@ -1,47 +1,73 @@
 @extends('layouts.WMS')
-@section('title')
-<title>Weather Monitoring Site</title>
-@endsection
-@push('navigation')
-<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Summary">
-    <a class="nav-link" href="wms">
-      <i class="fa fa-fw fa-dashboard"></i>
-      <span class="nav-link-text">Summary</span>
-    </a>
-  </li>
-  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-    <a class="nav-link" href="wms/charts">
-      <i class="fa fa-fw fa-area-chart"></i>
-      <span class="nav-link-text">Charts</span>
-    </a>
-  </li>
-  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-    <a class="nav-link" href="wms/tables">
-      <i class="fa fa-fw fa-table"></i>
-      <span class="nav-link-text">Tables</span>
-    </a>
-  </li>
-</ul>
-@endpush
-@push('breadcrumb')
+@section('content')
   <ol class="breadcrumb">
-    <li class="breadcrumb-item">
+    <li class="breadcrumb-item" href="{{route('wms.summary')}}">
       <a href="wms">Weather Monitoring</a>
     </li>
     <li class="breadcrumb-item active">Summary</li>
   </ol>
-@endpush
-@push('content')
-  <div class="col-12">
-        <div class="card mb-3">
-            <div class="card-header"><i class="fa fa-area-chart"></i> WMS Summary</div>
-                <div class="card-body">
-                  <canvas id="myBarChart" width="100%" height="30"></canvas>
-                </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
-    @include('wms.summaryjs')
-    </div>
+
+  <script type="text/javascript">
+
+  var data_value = <?php echo $dataFinal; ?>;
+  var parameter = <?php echo $parameter; ?>;
+  var stationName= <?php echo $stationName; ?>
+
+  $(function () {
+
+      // create the chart
+      Highcharts.stockChart('container', {
+          chart: {
+              alignTicks: false
+          },
+
+          rangeSelector: {
+              selected: 1
+          },
+
+          title: {
+              text: parameter + " at " + stationName
+          },
+
+          series: [{
+              type: 'column',
+              name: parameter + " at " + stationName,
+              data: data_value,
+              dataGrouping: {
+                  units: [[
+                      'week', // unit name
+                      [1] // allowed multiples
+                  ], [
+                      'month',
+                      [1, 2, 3, 4, 6]
+                  ]]
+              }
+          }]
+      });
+  });
+  </script>
+
+
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
+  <div class="card mb-3">
+      <div class="card-header"><i class="fa fa-area-chart"></i> WMS Summary</div>
+          <div class="card-body">
+            <div id="container" width="100%" height="30"></div>
+          </div>
+  <div class="card-footer small text-muted">Last updated at <?php echo str_replace('"','',$lastDate); ?> </div>
   </div>
-@endpush
+
+  <form method="get" action="" >
+    {{-- Using the Laravel HTML Form Collective to create our form --}}
+          Station:
+            {{ Form::select('station', $stationsArray, null, []) }}
+          Parameter:
+            {{ Form::select('parameter', $parametersArray, null, []) }}
+
+    {{ Form::submit('Update') }}
+
+  </form>
+
+@endsection
