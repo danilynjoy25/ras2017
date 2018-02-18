@@ -16,6 +16,9 @@
   <link href="{{asset('/vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{{asset('/css/sb-admin.css')}}" rel="stylesheet">
+  <!-- Custom made CSS  -->
+  <link href="{{asset('/css/custom.css')}}" rel="stylesheet">
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"}></script>

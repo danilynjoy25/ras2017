@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="container">
-    
+
     <h1>{{ $post->title }}</h1>
     <hr>
     <p class="lead">{{ $post->body }} </p>

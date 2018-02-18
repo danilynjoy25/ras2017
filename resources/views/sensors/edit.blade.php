@@ -4,8 +4,8 @@
 
 @section('content')
 
-<div class='col-lg-4 col-lg-offset-4'>
-    <h1><i class='fa fa-key'></i> Edit Role: {{$sensor->c_name}}</h1>
+<div class="container" style="padding-top: 30px; padding-bottom: 30px">
+    <h1><i class='fa fa-key'></i> Edit sensor: {{$sensor->c_name}}</h1>
     <hr>
     {{-- @include ('errors.list')
  --}}
@@ -18,15 +18,21 @@
 
     <div class="form-group">
         {{ Form::label('type', 'Type') }}
-        {{ Form::text('type', null, array('class' => 'form-control')) }}
+        {{ Form::select('type', $projects, null, ['class' => 'form-control']) }}
     </div>
 
-    <h5><b>Assign parameters</b></h5>
-      Parameters here
-    <br>
     {{ Form::submit('Edit', array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
 </div>
 
 @endsection
+
+@section('footer')
+<footer class="py-5 bg-dark" style="">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
+  </div>
+  <!-- /.container -->
+</footer>
+@endsection('footer')

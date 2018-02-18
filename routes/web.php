@@ -12,7 +12,14 @@
 */
 
 //RAS2017 ROUTES
-Route::get('/', function () {return view('home');})->name('homepage');
+Route::get('/',
+  function () {
+
+  $status = App\Http\Controllers\APIController::getSensorData();
+
+  return view('home')->with('status', $status);
+  }
+)->name('homepage');
 
 Auth::routes();
 
@@ -27,9 +34,15 @@ Route::resource('sensors', 'SensorController');
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
 //WMS ROUTES
+//SUMMARY
+
 Route::get('wms', 'WMSController@summary')->name('wms.summary');
 
+//CHARTS
+
 Route::get('wms/charts', 'WMSController@chart')->name('wms.charts');
+
+//TABLES
 
 Route::get('wms/tables', 'WMSController@tables')->name('wms.tables');
 

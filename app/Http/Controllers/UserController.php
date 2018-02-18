@@ -15,7 +15,7 @@ use Session;
 class UserController extends Controller
 {
     use HasRoles;
-    
+
     public function __construct()
     {
         $this->middleware(['auth', 'isAdmin']);
@@ -128,7 +128,7 @@ class UserController extends Controller
         }
         return redirect()->route('users.index')
             ->with('flash_message',
-             'User successfully edited.');
+             'User updated successfully.');
     }
 
     /**

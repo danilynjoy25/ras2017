@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Sensor_data;
 use App\Models\Sensor;
@@ -74,6 +75,8 @@ class WMSController extends Controller
         ->value('c_time');
     $lastDate = date("d F Y H:i:s", strtotime($lastDate));
 
+    $status = APIController::getSensorData();
+
     return view('wms.summary')
         ->with('stationsArray', $stationsArray)
         ->with('parametersArray', $parametersArray)
@@ -82,17 +85,9 @@ class WMSController extends Controller
         ->with('parameter', json_encode($parameter,JSON_NUMERIC_CHECK))
         ->with('valueArray', json_encode($data,JSON_NUMERIC_CHECK))
         ->with('dataFinal', json_encode($dataFinal,JSON_NUMERIC_CHECK))
-        ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK));
+        ->with('lastDate', $lastDate)
+        ->with('status', $status);
     }
-
-
-    public function tables()
-    {
-       //Display all sensor data
-        $sensor_data = \App\Models\Sensor_data::all();
-	      return view('wms.tables', compact('sensor_data'));
-    }
-
 
     public function chart()
     {
@@ -159,6 +154,9 @@ class WMSController extends Controller
           ->value('c_time');
       $lastDate = date("d F Y H:i:s", strtotime($lastDate));
 
+      $status = APIController::getSensorData();
+
+
       return view('wms.charts')
           ->with('stationsArray', $stationsArray)
           ->with('parametersArray', $parametersArray)
@@ -167,7 +165,19 @@ class WMSController extends Controller
           ->with('parameter', json_encode($parameter,JSON_NUMERIC_CHECK))
           ->with('valueArray', json_encode($data,JSON_NUMERIC_CHECK))
           ->with('dataFinal', json_encode($dataFinal,JSON_NUMERIC_CHECK))
-          ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK));
+          ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK))
+          ->with('status', $status);
     }
 
+    public static function tables()
+    {
+       //Display all sensor data
+        $sensor_data = \App\Models\Sensor_data::all();
+
+        $status = APIController::getSensorData();
+
+        return view('wms.tables', compact('sensor_data'))
+            ->with('status', $status);
+
+    }
 }

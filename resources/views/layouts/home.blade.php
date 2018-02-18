@@ -16,6 +16,9 @@
     <!-- Custom CSS -->
     <link href="{{asset('css/2-col-portfolio.css')}}" rel="stylesheet">
 
+    <!-- Custom made CSS -->
+    <link href="{{asset('/css/custom.css')}}" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -52,7 +55,7 @@
   <body style="display:block" >
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbarResponsive">
       <div class="container">
         <a class="navbar-brand" href="{{route('homepage')}}">ADMU Monitoring Systems</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

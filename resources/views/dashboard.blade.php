@@ -6,26 +6,17 @@
 
       <div class="card mb-3">
         <div class="card-header"><span class="glyphicon glyphicon-user"></span>
-          <h3>User Profile</h3>
+          <h5>Profile</h5>
         </div>
+
         <div class="card-body">
 
-          <table style="height: 200px;">
-          <tbody>
-          <tr>
-          <td style="width: 25%;">
-            <a><img src="http://via.placeholder.com/200"></a>
-          </td>
-          <td style="padding-left: 20px">
-            <h1>{{Auth::user()->name}}</h1>
-            <h4>{{ Auth::user()->getRoleNames()->implode(',')}}</h4>
-            <h5>{{ Auth::user()->email}}</h5>
-          </td>
-          </tr>
-          </tbody>
-          </table>
-
+            <div style="float:left; margin-right: 1em;"> <a><img src="http://via.placeholder.com/200"></a></div>
+              <h1>{{Auth::user()->name}}</h1>
+              <h4>{{ Auth::user()->getRoleNames()->implode(',')}}</h4>
+              <h5>{{ Auth::user()->email}}</h5>
         </div>
+
       </div>
 
       <script type="text/javascript">
@@ -36,7 +27,7 @@
     @can('Administer roles & permissions')
 
     <div class="card card-login" style="margin-top:10px">
-        <div class="card-header"><span class="glyphicon glyphicon-user"></span><h3>Users</h3></div>
+        <div class="card-header"><span class="glyphicon glyphicon-user"></span><h5>Users</h5></div>
         <div class="card-body">
           <div class="table-responsive">
               <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
@@ -62,7 +53,11 @@
                         <td style="display:flex">
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
-                        {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id] ]) !!}
+                        {!! Form::open([
+                            'method' => 'DELETE',
+                            'route' => ['users.destroy', $user->id],
+                            'onsubmit' => "return confirm('Are you sure you want to delete this user?')"
+                        ]) !!}
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
 
@@ -78,9 +73,9 @@
     </div>
     @endcan
 
-    @if(Auth::user()->hasAnyPermission(['Add sensor', 'Delete sensor', 'Edit sensors']))
+    @if(Auth::user()->hasAnyPermission(['Add sensor', 'Delete sensor', 'Edit sensor']))
     <div class="card card-login" style="margin-top:10px; margin-bottom: 10px">
-      <div class="card-header"><span class="glyphicon glyphicon-user"></span><h3>Sensors</h3></div>
+      <div class="card-header"><span class="glyphicon glyphicon-user"></span><h5>Sensors</h5></div>
         <div class="card-body">
               <table class="table table-bordered table-striped">
                   <thead>
@@ -100,9 +95,14 @@
                           <td style="display: flex;">
                           <a href="{{ URL::to('sensors/'.$sensor->c_id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
-                          {!! Form::open(['method' => 'DELETE', 'route' => ['sensors.destroy', $sensor->c_id] ]) !!}
+                          {!! Form::open([
+                              'method' => 'DELETE',
+                              'route' => ['sensors.destroy', $sensor->c_id],
+                              'onsubmit' => "return confirm('Are you sure you want to delete this user?')"
+                          ]) !!}
                           {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                           {!! Form::close() !!}
+                          
 
                           </td>
                       </tr>
@@ -122,10 +122,8 @@
 @stop
 
 @section('footer')
-<footer class="py-5 bg-dark" style="">
-  <div class="container">
+<footer class="py-5 bg-dark" style="width: 100%">
     <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
-  </div>
   <!-- /.container -->
 </footer>
 @endsection('footer')

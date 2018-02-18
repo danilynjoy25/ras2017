@@ -5,8 +5,17 @@
 @section('content')
 
 <div class="container" style="padding-top: 30px; padding-bottom: 30px">
-    <h1><i class="fa fa-users"></i> User Administration <a href="{{ route('roles.index') }}" class="btn btn-info pull-left">Roles</a>
-    <a href="{{ route('permissions.index') }}" class="btn btn-info pull-left">Permissions</a></h1>
+
+  @if(Session::has('flash_message'))
+      <div class="alert alert-success">
+        <em> {!! session('flash_message') !!}</em>
+      </div>
+  @endif
+
+    <h4><i class="fa fa-users"></i> User Administration
+      <div style="float: right">
+      <a href="{{ route('roles.index') }}" class="btn btn-secondary">Roles</a>
+      <a href="{{ route('permissions.index') }}" class="btn btn-secondary">Permissions</a></h1>
     <hr>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
@@ -23,7 +32,7 @@
 
             <tbody>
                 @foreach ($users as $user)
-                <tr>
+                <tr style="white-space: nowrap">
 
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
@@ -31,12 +40,14 @@
                     <td>{{  $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
 
                     <td>
-                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id] ]) !!}
+                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info" style="">Edit</a>
+                    {!! Form::open([
+                        'method' => 'DELETE', 
+                        'route' => ['users.destroy', $user->id],
+                        'onsubmit' => "return confirm('Are you sure you want to delete this user?')"
+                    ]) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
-
                     </td>
                 </tr>
                 @endforeach

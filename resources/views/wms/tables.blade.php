@@ -17,6 +17,13 @@
     <li class="breadcrumb-item active">Tables</li>
   </ol>
 
+  @if($status != 'success')
+      <div class="alert alert-danger">
+        <em> Trouble connecting to API <br> <em>
+        <em> {!! $status !!}</em>
+      </div>
+  @endif
+
 	<div class="card mb-3">
 			<div class="card-header">
 			  <i class="fa fa-table"></i> Data Tables</div>

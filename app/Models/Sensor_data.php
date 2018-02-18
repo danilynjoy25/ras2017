@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sensor_data extends Model
 {
-  protected $table = 't_sensor_DATA';
-  protected $primaryKey = 'c_id';
+  protected $table = 't_sensor_data';
+  const CREATED_AT = 'c_time';
 
 }

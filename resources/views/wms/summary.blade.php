@@ -1,11 +1,20 @@
 @extends('layouts.WMS')
 @section('content')
+
+
   <ol class="breadcrumb">
     <li class="breadcrumb-item" href="{{route('wms.summary')}}">
       <a href="wms">Weather Monitoring</a>
     </li>
     <li class="breadcrumb-item active">Summary</li>
   </ol>
+
+  @if($status != 'success')
+      <div class="alert alert-danger">
+        <em> Trouble connecting to API <br> <em>
+        <em> {!! $status !!}</em>
+      </div>
+  @endif
 
   <script type="text/javascript">
 
@@ -56,7 +65,7 @@
           <div class="card-body">
             <div id="container" width="100%" height="30"></div>
           </div>
-  <div class="card-footer small text-muted">Last updated at <?php echo str_replace('"','',$lastDate); ?> </div>
+  <div class="card-footer small text-muted">Last updated at {{$lastDate}} </div>
   </div>
 
   <form method="get" action="" >
@@ -69,5 +78,6 @@
     {{ Form::submit('Update') }}
 
   </form>
+
 
 @endsection

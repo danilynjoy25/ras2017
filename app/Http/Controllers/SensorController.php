@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use Auth;
@@ -20,7 +21,7 @@ class SensorController extends Controller
         $this->middleware(['auth', 'clearance'])
             ->except('index', 'show');
     }
-    
+
     public function index()
     {
         $sensors = \App\Models\Sensor::all();
@@ -35,7 +36,9 @@ class SensorController extends Controller
      */
      public function create()
      {
-       return view('sensors.create');
+       $projects = DB::table('t_projects')->pluck('c_name', 'c_name');
+
+       return view('sensors.create', compact('projects'));
      }
 
    /**
@@ -57,8 +60,8 @@ class SensorController extends Controller
        $sensor = \App\Models\Sensor::create(['c_type'=>$type, 'c_name' => $name]);
 
        return redirect()->route('sensors.index')
-           ->with('flash_message', 'Sensor,
-            '. $sensor->c_name.' created');
+           ->with('flash_message', 'Sensor
+            '. $sensor->c_name.' created successfully.');
    }
 
    /**
@@ -83,8 +86,9 @@ class SensorController extends Controller
    public function edit($id)
    {
        $sensor = \App\Models\Sensor::findOrFail($id);
+       $projects = DB::table('t_projects')->pluck('c_name', 'c_name');
 
-       return view('sensors.edit', compact('sensor'));
+       return view('sensors.edit', compact('sensor'), compact('projects'));
    }
 
    /**
@@ -106,9 +110,8 @@ class SensorController extends Controller
        $sensor->c_name = $request->input('name');
        $sensor->save();
 
-       return redirect()->route('sensors.index',
-           $sensor->c_id)->with('flash_message',
-           'Sensor, '. $sensor->c_name.' updated');
+       return redirect()->route('sensors.index',$sensor->c_id)
+           ->with('flash_message','Sensor '. $sensor->c_name.' updated successfully.');
    }
 
    /**

@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class='col-lg-4 col-lg-offset-4'>
+<div class="container" style="padding-top: 30px; padding-bottom: 30px">
 
     <h1><i class='fa fa-key'></i> Add Sensor</h1>
     <hr>
@@ -19,19 +19,21 @@
 
     <div class="form-group">
         {{ Form::label('type', 'Type') }}
-        {{ Form::text('type', null, array('class' => 'form-control')) }}
+        {{ Form::select('type', $projects, null, ['class' => 'form-control']) }}
+
     </div>
 
-    <h5><b>Assign parameters</b></h5>
-
-    <div class='form-group'>
-      Parameters checkbox here
-    </div>
-
-    {{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
+    {{ Form::submit('Add sensor', array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
 
 </div>
 
 @endsection
+
+@section('footer')
+<footer class="py-5 bg-dark" style="width: 100%">
+    <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
+  <!-- /.container -->
+</footer>
+@endsection('footer')

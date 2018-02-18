@@ -5,11 +5,13 @@
 @section('content')
 
 <div class="container" style="padding-top: 30px; padding-bottom: 30px">
-    <h1><i class="fa fa-key"></i> Roles
 
-    <a href="{{ route('users.index') }}" class="btn btn-info pull-left">Users</a>
-    <a href="{{ route('permissions.index') }}" class="btn btn-info pull-left">Permissions</a></h1>
+    <h4><i class="fa fa-users"></i> Roles
+      <div style="float: right">
+      <a href="{{ route('users.index') }}" class="btn btn-secondary">Users</a>
+      <a href="{{ route('permissions.index') }}" class="btn btn-secondary">Permissions</a></h1>
     <hr>
+
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
@@ -30,7 +32,11 @@
                     <td>
                     <a href="{{ URL::to('roles/'.$role->id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id] ]) !!}
+                    {!! Form::open([
+                        'method' => 'DELETE',
+                        'route' => ['roles.destroy', $role->id],
+                        'onsubmit' => "return confirm('Are you sure you want to delete this role?')"
+                    ]) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
 

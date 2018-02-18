@@ -2,10 +2,16 @@
 
 @section('content')
 
-<div class="col-lg-10 col-lg-offset-1">
+<div class="container" style="padding-top: 30px; padding-bottom: 30px">
+
+  @if(Session::has('flash_message'))
+      <div class="alert alert-success">
+        <em> {!! session('flash_message') !!}</em>
+      </div>
+  @endif
+
     <h1><i class="fa fa-key"></i> Sensors
 
-    <a href="" class="btn btn-default pull-right">Parameters</a>
     </h1>
     <hr>
     <div class="table-responsive">
@@ -27,7 +33,11 @@
                     <td>
                     <a href="{{ URL::to('sensors/'.$sensor->c_id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['sensors.destroy', $sensor->c_id] ]) !!}
+                    {!! Form::open([
+                        'method' => 'DELETE',
+                        'route' => ['sensors.destroy', $sensor->c_id],
+                        'onsubmit' => "return confirm('Are you sure you want to delete this sensor?')"
+                    ]) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
 
@@ -43,3 +53,10 @@
 </div>
 
 @stop
+
+@section('footer')
+<footer class="py-5 bg-dark" style="width: 100%">
+    <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
+  <!-- /.container -->
+</footer>
+@endsection('footer')
