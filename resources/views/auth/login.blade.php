@@ -3,7 +3,7 @@
 @section('content')
 
   <div class="container" style = "overflow: hidden; padding-bottom: 50px;">
-    <div class="card card-login mx-auto mt-5" style="width: 50%">
+    <div class="card card-login mx-auto mt-5" style="width: 450px">
       <div class="card-header">Login</div>
       <div class="card-body">
         <form class="form-horizontal" method="POST" action="{{ route('login') }}">
@@ -66,9 +66,9 @@
 @endsection
 
 @section('footer')
-<footer class="py-5 bg-dark" style="position:absolute; bottom:0; width: 100%">
+<footer class="py-5 bg-dark" style="">
   <div class="container">
-    <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+    <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
   </div>
   <!-- /.container -->
 </footer>

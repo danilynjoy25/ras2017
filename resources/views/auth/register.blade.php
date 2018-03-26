@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container" style = "overflow: hidden; padding-bottom: 50px;">
-  <div class="card card-login mx-auto mt-5" style="width: 50%">
+  <div class="card card-login mx-auto mt-5" style="width: 500px">
     <div class="card-header">Register</div>
     <div class="card-body">
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
@@ -44,7 +44,9 @@
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
+                                      <div class="alert alert-danger">
+                                          <strong>{{ $errors->first('password') }}</strong>
+                                      </div>
                                     </span>
                                 @endif
                             </div>

@@ -50,12 +50,12 @@ class SensorController extends Controller
    public function store(Request $request)
    {
        $this->validate($request, [
-           'type'=>'required',
-           'name' =>'required',
+           'c_type'=>'required',
+           'c_name' =>'required | unique:t_sensors',
            ]);
 
-       $type = $request['type'];
-       $name = $request['name'];
+       $type = $request['c_type'];
+       $name = $request['c_name'];
 
        $sensor = \App\Models\Sensor::create(['c_type'=>$type, 'c_name' => $name]);
 

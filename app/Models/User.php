@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+// use Illuminate\Contracts\Auth\CanResetPassword;
 
 class User extends Authenticatable
 {
@@ -31,6 +33,11 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($password)
     {
+      if(Hash::needsRehash($password)){
         $this->attributes['password'] = bcrypt($password);
+      }else{
+        $this->attributes['password'] = $password;
+      }
+
     }
 }

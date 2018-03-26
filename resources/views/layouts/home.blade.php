@@ -16,30 +16,22 @@
     <!-- Custom CSS -->
     <link href="{{asset('css/2-col-portfolio.css')}}" rel="stylesheet">
 
+    <!-- Custom fonts for this template-->
+    <link href="{{asset('/vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+
+    <!-- Page level plugin CSS-->
+    <!-- <link href="{{asset('/vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet"> -->
+
     <!-- Custom made CSS -->
     <link href="{{asset('/css/custom.css')}}" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- jQuery -->
-    <!-- <script src="{/{/asset('js/jquery.js')}}"></script> -->
-
-    <!-- <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <!-- <script src="{{asset('js/bootstrap.min.js')}}"></script>
-
-    <!-- Data tables -->
-    <!-- <link href="{{asset('vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">  -->
+    <!-- <script src="{{asset('js/bootstrap.min.js')}}"></script> -->
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"}></script>
+
     <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
@@ -47,68 +39,73 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
     <!-- Custom scripts for all pages-->
-    <script src="{{asset('js/sb-admin.min.js')}}"></script>
+    <!-- <script src="{{asset('js/sb-admin.min.js')}}"></script> -->
     <!-- Custom scripts for this page-->
     <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
+
   </head>
 
   <body style="display:block" >
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbarResponsive">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="{{route('homepage')}}">ADMU Monitoring Systems</a>
+        <a class="navbar-brand" href="{{route('home')}}">ADMU Monitoring Systems</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('homepage')}}">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item dropdown ">
-            <a class="nav-link dropdown-toggle" id="projectsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Projects
-            </a>
-            <div class="dropdown-menu" aria-labelledby="accountDropdown">
-              <a class="dropdown-item small " href="{{route('dms.home')}}">
-                Dam Monitoring
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{route('home')}}">Home
+                <span class="sr-only">(current)</span>
               </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item small" href="{{route('wms.summary')}}">
-                Weather Monitoring
-              </a>
-          </li>
-          @if (Auth::guest())
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('login') }}">Login</a>
-          </li>
+            </li>
+            <li class="nav-item dropdown ">
+              <a class="nav-link dropdown-toggle" id="projectsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Projects
+                </a>
+                <div class="dropdown-menu" aria-labelledby="accountDropdown">
+                  <a class="dropdown-item small " href="{{route('dms.home')}}">
+                    Dam Monitoring
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item small" href="{{route('wms.summary')}}">
+                    Weather Monitoring
+                  </a>
+                </div>
+              </li>
+              @if (Auth::guest())
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('login') }}">Login</a>
+              </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('register') }}">Register</a>
-          </li>
-          @else
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('dashboard')}}">
-              <i class="fa fa-fw fa-wrench"></i>
-              {{Auth::user()->name}}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-              <i class="fa fa-fw fa-sign-out nav-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();"></i>Logout</a>
-          </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('register') }}">Register</a>
+              </li>
+              @else
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('dashboard')}}">
+                  <i class="fa fa-fw fa-wrench"></i>
+                  {{Auth::user()->name}}
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                  <i class="fa fa-fw fa-sign-out nav-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();"></i>Logout</a>
+              </li>
 
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              {{ csrf_field() }}
-          </form>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+              </form>
 
-        </ul>
-        @endif
+            </ul>
+            @endif
+        </div>
+      </div>
     </nav>
    <!-- /Navigation -->
 
@@ -147,6 +144,6 @@
       </div>
     </div>
 
-  </body>
 
+  </body>
 </html>

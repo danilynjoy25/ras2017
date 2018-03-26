@@ -6,18 +6,35 @@
 
 <div class="container" style="padding-top: 30px; padding-bottom: 30px">
 
-    {{-- @include ('errors.list') --}}
+  <ol class="breadcrumb breadcrumb-settings">
+    <li class="breadcrumb-item">
+      <a href="{{route('dashboard')}}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{route('permissions.index')}}">Permissions</a>
+    </li>
+    <li class="breadcrumb-item active">Add Permission</li>
+  </ol>
 
-    <h1><i class='fa fa-key'></i> Add Permission</h1>
-    <br>
+    {{-- @include ('errors.list') --}}
 
     {{ Form::open(array('url' => 'permissions')) }}
 
     {{ csrf_field() }}
-
+<div class="row">
+   <div class="col-lg-5 mx-auto mt-3">
     <div class="form-group">
         {{ Form::label('name', 'Name') }}
         {{ Form::text('name', '', array('class' => 'form-control')) }}
+
+        @if ($errors->has('name'))
+            <span class="help-block">
+              <div class="alert alert-danger">
+                <strong>{{ $errors->first('name') }}</strong>
+              </div>
+            </span>
+        @endif
+
     </div>
     <br>
 
@@ -34,10 +51,12 @@
     @endif
 
     <br>
-    {{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
+    {{ Form::submit('Add Permission', array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
 
+    </div>
+  </div>
 </div>
 
 @endsection

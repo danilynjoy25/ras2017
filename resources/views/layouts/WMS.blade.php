@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <title>ADMU - Weather Monitoring System</title>
   <!-- Bootstrap core CSS-->
-  <link href="{{asset('/vendor/bootstrap/css/bootstrap.min.cs')}}s" rel="stylesheet">
+  <link href="{{asset('/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="{{asset('/vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
   <!-- Page level plugin CSS-->
@@ -19,19 +19,9 @@
   <!-- Custom made CSS  -->
   <link href="{{asset('/css/custom.css')}}" rel="stylesheet">
 
-
   <!-- Bootstrap core JavaScript-->
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"}></script>
-  <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-  <!-- Core plugin JavaScript-->
-  <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-  <!-- Page level plugin JavaScript-->
-  <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
-  <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
-  <!-- Custom scripts for all pages-->
-  <script src="{{asset('js/sb-admin.min.js')}}"></script>
-  <!-- Custom scripts for this page-->
-  <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
+
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -42,17 +32,40 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Summary">
           <a class="nav-link" href="{{route('wms.summary')}}">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Summary</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="{{route('wms.charts')}}">
+          <!-- <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">Charts</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents">
+            <li>
+              <a href="{/{/route('wms.area')}}">
+                <i class="fa fa-area-chart"></i> Area</a>
+            </li>
+          </ul> -->
+          <a class="nav-link" href="{{route('wms.area')}}">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">Chart</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live">
+          <a class="nav-link" href="">
+            <i class="fa fa-fw fa-line-chart"></i>
+            <span class="nav-link-text">Live</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
@@ -65,7 +78,7 @@
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{{route('homepage')}}">Home
+          <a class="nav-link" href="{{route('home')}}">Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -111,6 +124,7 @@
       </ul>
       @endif
       </div>
+    </div>
   </nav>
 
 
@@ -159,6 +173,18 @@
     </div>
 
   </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+  <!-- Page level plugin JavaScript-->
+  <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+  <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="{{asset('js/sb-admin.min.js')}}"></script>
+  <!-- Custom scripts for this page-->
+  <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
 </body>
 
 </html>

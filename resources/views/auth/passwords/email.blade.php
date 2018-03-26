@@ -1,13 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
+<div class="container" style = "overflow: hidden; padding-bottom: 50px;">
+  <div class="card card-login mx-auto mt-5" style="width: 50%">
+    <div class="card-header">Login</div>
+    <div class="card-body" >
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
@@ -18,9 +15,10 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-10 mx-auto">
+                              <label for="email" class="control-label">E-Mail Address:</label>
+
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('email'))
@@ -32,16 +30,24 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-6 col-md-offset-4 mx-auto">
                                 <button type="submit" class="btn btn-primary">
                                     Send Password Reset Link
                                 </button>
                             </div>
                         </div>
                     </form>
-                </div>
             </div>
         </div>
     </div>
-</div>
+
 @endsection
+
+@section('footer')
+<footer class="py-5 bg-dark" style="">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
+  </div>
+  <!-- /.container -->
+</footer>
+@endsection('footer')

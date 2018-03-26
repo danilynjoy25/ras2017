@@ -1,13 +1,6 @@
 @extends('layouts.home')
 @section('content')
 
-  @if($status != 'success')
-      <div class="alert alert-danger">
-        <em> Trouble connecting to API <br> <em>
-        <em> {!! $status !!}</em>
-      </div>
-  @endif
-
 <div class="container" style="margin: auto">
   <div class="row" style = "overflow: hidden; padding-top: 30px;" >
     <div class="col-lg-6 portfolio-item">

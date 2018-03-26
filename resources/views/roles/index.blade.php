@@ -6,30 +6,45 @@
 
 <div class="container" style="padding-top: 30px; padding-bottom: 30px">
 
-    <h4><i class="fa fa-users"></i> Roles
-      <div style="float: right">
-      <a href="{{ route('users.index') }}" class="btn btn-secondary">Users</a>
-      <a href="{{ route('permissions.index') }}" class="btn btn-secondary">Permissions</a></h1>
-    <hr>
+    @if(Session::has('flash_message'))
+        <div class="alert alert-success">
+          <em> {!! session('flash_message') !!}</em>
+        </div>
+    @endif
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+    <ol class="breadcrumb breadcrumb-settings">
+      <li class="breadcrumb-item">
+        <a href="{{route('dashboard')}}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">Roles</li>
+    </ol>
+
+   <div class="btn-settings">
+    <a href="{{ route('roles.create') }}" class="btn btn-success">Add Role</a>
+      <!-- <div style=""> -->
+        <a href="{{ route('users.index') }}" class="btn btn-secondary">Users</a>
+        <a href="{{ route('permissions.index') }}" class="btn btn-secondary">Permissions</a></h1>
+      <!-- </div> -->
+   </div>
+
+    <div class="table-responsive" style="margin-top:0.5em">
+        <table class="table table-bordered table-striped" id="dataTable">
             <thead>
-                <tr>
-                    <th>Role</th>
-                    <th>Permissions</th>
-                    <th>Operation</th>
+                <tr class="d-flex">
+                    <th class="col-5">Role</th>
+                    <th class="col-5">Permissions</th>
+                    <th class="col-2">Operation</th>
                 </tr>
             </thead>
 
             <tbody>
                 @foreach ($roles as $role)
-                <tr>
+                <tr class="d-flex">
 
-                    <td>{{ $role->name }}</td>
+                    <td class="col-sm-5">{{ $role->name }}</td>
 
-                    <td>{{  $role->permissions()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of permissions associated to a role and convert to string --}}
-                    <td>
+                    <td class="col-sm-5">{{  $role->permissions()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of permissions associated to a role and convert to string --}}
+                    <td class="col-sm-2">
                     <a href="{{ URL::to('roles/'.$role->id.'/edit') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
 
                     {!! Form::open([
@@ -48,7 +63,7 @@
         </table>
     </div>
 
-    <a href="{{ URL::to('roles/create') }}" class="btn btn-success">Add Role</a>
+    <!-- <a href="{{ URL::to('roles/create') }}" class="btn btn-success">Add Role</a> -->
 
 </div>
 

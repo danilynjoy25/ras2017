@@ -103,6 +103,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'c_name' => [
+            'unique' => "This name has already been taken."
+        ]
     ],
 
     /*

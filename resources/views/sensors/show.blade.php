@@ -23,3 +23,12 @@
 </div>
 
 @endsection
+
+@section('footer')
+<footer class="py-5 bg-dark" style="">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; ADMU Monitoring 2018</p>
+  </div>
+  <!-- /.container -->
+</footer>
+@endsection('footer')

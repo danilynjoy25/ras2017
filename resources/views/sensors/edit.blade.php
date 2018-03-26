@@ -1,16 +1,29 @@
 @extends('layouts.home')
 
-<!-- @section('title', '| Edit Role') -->
+<!-- @section('title', '| Edit Sensor') -->
 
 @section('content')
 
 <div class="container" style="padding-top: 30px; padding-bottom: 30px">
-    <h1><i class='fa fa-key'></i> Edit sensor: {{$sensor->c_name}}</h1>
-    <hr>
+
+  <ol class="breadcrumb breadcrumb-settings">
+    <li class="breadcrumb-item">
+      <a href="{{route('dashboard')}}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{route('sensors.index')}}">Sensors</a></li>
+    <li class="breadcrumb-item active">Edit {{$sensor->c_name}}</li>
+  </ol>
+
+  <div class="row">
+     <div class="col-lg-5 mt-3 mx-auto">
+
+    <!-- <h2><i class='fa fa-key'></i> Edit sensor: {{$sensor->c_name}}</h2> -->
+    <!-- <hr> -->
     {{-- @include ('errors.list')
  --}}
     {{ Form::model($sensor, array('route' => array('sensors.update', $sensor->c_id), 'method' => 'PUT')) }}
-
+        {{ csrf_field() }}
     <div class="form-group">
         {{ Form::label('name', 'Sensor name') }}
         {{ Form::text('name', null, array('class' => 'form-control')) }}
@@ -24,6 +37,8 @@
     {{ Form::submit('Edit', array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
+    </div>
+  </div>
 </div>
 
 @endsection
