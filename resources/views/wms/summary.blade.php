@@ -34,7 +34,9 @@
           <button type=submit name="parameter" value="Temperature" id="temp_button" class="btn btn-info pull-left" style="background-color:#ee6d6d; border:none">Temperature</button>
           <button type=submit name="parameter" value="Pressure" id="pres_button" class="btn btn-info pull-left" style="background-color:#ec7c7c; border:none">Pressure</button>
           <button type=submit name="parameter" value="Humidity" id="hum_button" class="btn btn-info pull-left" style="background-color:#ee876d; border:none">Humidity</button>
-          <button type=submit name="parameter" value="Rain intensity" id="rain_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Rain intensity</button>
+          <button type=submit name="parameter" value="Rain rate" id="rain_rate_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Rain rate</button>
+          <button type=submit name="parameter" value="Total rain" id="tota_rain_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Total rain</button>
+          <button type=submit name="parameter" value="Sound level" id="sound_level_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Sound level</button>
           <button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#586d92; border:none">Wind speed</button>
           <button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none;">Wind Direction</button>
           </form>
@@ -87,7 +89,11 @@
                 color = "peach";
             }else if(parameter == 'Humidity'){
                 color = "yellow";
-            }else if(parameter == 'Rain intensity'){
+            }else if(parameter == 'Rain rate'){
+                color = "blue";
+            }else if(parameter == 'Total rain'){
+                color = "blue";
+            }else if(parameter == 'Sound level'){
                 color = "blue";
             }else if(parameter == 'Temperature'){
                 color = "teal";

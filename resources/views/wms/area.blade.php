@@ -63,12 +63,15 @@
 
 
 </form>
-  <button id="temp_button" class="btn btn-info pull-left" style="background-color:#ee6d6d; border:none">Temperature</button>
-  <button id="pres_button" class="btn btn-info pull-left" style="background-color:#ec7c7c; border:none">Pressure</button>
-  <button id="hum_button" class="btn btn-info pull-left" style="background-color:#ee876d; border:none">Humidity</button>
-  <button id="rain_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Rain intensity</button>
-  <button id="wind_button" class="btn btn-info pull-left" style="background-color:#586d92; border:none">Wind speed</button>
-  <button id="dir_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none;">Wind Direction</button>
+<button type=submit name="parameter" value="Temperature" id="temp_button" class="btn btn-info pull-left" style="background-color:#ee6d6d; border:none">Temperature</button>
+<button type=submit name="parameter" value="Pressure" id="pres_button" class="btn btn-info pull-left" style="background-color:#ec7c7c; border:none">Pressure</button>
+<button type=submit name="parameter" value="Humidity" id="hum_button" class="btn btn-info pull-left" style="background-color:#ee876d; border:none">Humidity</button>
+<button type=submit name="parameter" value="Rain rate" id="rain_rate_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Rain rate</button>
+<button type=submit name="parameter" value="Total rain" id="total_rain_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Total rain</button>
+<button type=submit name="parameter" value="Sound level" id="sound_level_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Sound level</button>
+<button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#586d92; border:none">Wind speed</button>
+<button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none;">Wind Direction</button>
+</form>
 </div>
 
 <script type="text/javascript">
@@ -94,10 +97,14 @@ var chart;
       var temp_data = <?php echo $temp_dataFinal; ?>;
       var hum_data = <?php echo $hum_dataFinal; ?>;
       var wind_data = <?php echo $wind_dataFinal; ?>;
-      var rain_data = <?php echo $rain_dataFinal; ?>;
+      var rain_rate_data = <?php echo $rain_rate_dataFinal; ?>;
+      var total_rain_data = <?php echo $total_rain_dataFinal; ?>;
+      var sound_level_data = <?php echo $sound_level_dataFinal; ?>;
       var dir_data = <?php echo $dir_dataFinal; ?>;
       var pres_data = <?php echo $pres_dataFinal; ?>;
       var stationName= <?php echo $stationName; ?>
+
+      var last_temp = <?php echo $last_temp; ?>;
 
       var config = {
                     chart: {
@@ -202,8 +209,50 @@ var chart;
                         }
                     },
                     {
-                        name: "Rain intensity",
-                        data:  rain_data,
+                        name: "Rain rate",
+                        data:  rain_rate_data,
+                        type: 'spline',
+                        threshold: null,
+                        tooltip: {
+                            valueDecimals: 2
+                        },
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[3]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        }
+                    },
+                    {
+                        name: "Total rain",
+                        data:  total_rain_data,
+                        type: 'spline',
+                        threshold: null,
+                        tooltip: {
+                            valueDecimals: 2
+                        },
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[3]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        }
+                    },
+                    {
+                        name: "Sound level",
+                        data:  sound_level_data,
                         type: 'spline',
                         threshold: null,
                         tooltip: {
@@ -272,7 +321,9 @@ var chart;
   var $temp_button = $('#temp_button');
   var $pres_button = $('#pres_button');
   var $hum_button = $('#hum_button');
-  var $rain_button = $('#rain_button');
+  var $rain_rate_button = $('#rain_rate_button');
+  var $total_rain_button = $('#total_rain_button');
+  var $sound_level_button = $('#sound_level_button');
   var $wind_button = $('#wind_button');
   var $dir_button = $('#dir_button');
 
@@ -311,19 +362,41 @@ var chart;
       }
   });
 
-  $rain_button.click(function () {
+  $rain_rate_button.click(function () {
       var series = chart.series[3];
       if (series.visible) {
           series.hide();
-          rain_button.style.backgroundColor = '#E5E5E5';
+          rain_rate_button.style.backgroundColor = '#E5E5E5';
       } else {
           series.show();
-          rain_button.style.backgroundColor = '#5e8692';
+          rain_rate_button.style.backgroundColor = '#5e8692';
+      }
+  });
+
+  $total_rain_button.click(function () {
+      var series = chart.series[4];
+      if (series.visible) {
+          series.hide();
+          total_rain_button.style.backgroundColor = '#E5E5E5';
+      } else {
+          series.show();
+          total_rain_button.style.backgroundColor = '#5e8692';
+      }
+  });
+
+  $sound_level_button.click(function () {
+      var series = chart.series[5];
+      if (series.visible) {
+          series.hide();
+          sound_level_button.style.backgroundColor = '#E5E5E5';
+      } else {
+          series.show();
+          sound_level_button.style.backgroundColor = '#5e8692';
       }
   });
 
   $wind_button.click(function () {
-      var series = chart.series[4];
+      var series = chart.series[6];
       if (series.visible) {
           series.hide();
           wind_button.style.backgroundColor = '#E5E5E5';
@@ -334,7 +407,7 @@ var chart;
   });
 
   $dir_button.click(function () {
-      var series = chart.series[5];
+      var series = chart.series[7];
       if (series.visible) {
           series.hide();
           dir_button.style.backgroundColor = '#E5E5E5';

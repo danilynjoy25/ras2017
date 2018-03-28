@@ -24,7 +24,12 @@ class WMSController extends Controller
                         WHERE s.c_type = 'WMS' AND sd.c_sensed_parameter = '$parameter' AND YEAR(sd.c_time) = '2018'
                         GROUP BY DATE(sd.c_time);"
                     );
-
+    $weekly_average = DB::select(
+                          "SELECT AVG(sd.c_value)
+                          FROM   t_sensor_data AS sd
+                          WHERE  YEARWEEK(`c_time`, 1) = YEARWEEK(CURDATE(), 1)
+                          AND c_sensed_parameter = '$parameter'"
+                      );
     return view('wms.summary')
             ->with('parameter', json_encode($parameter))
            ->with('daily_data', json_encode($daily_data));
@@ -113,26 +118,65 @@ class WMSController extends Controller
         $hum_dataFinal[] = array(strtotime($key)*1000, $val);
       }
 
-      //Rain intensity
-      $rain_data = DB::table('t_sensor_data')
+      //Rain rate
+      $rain_rate_data = DB::table('t_sensor_data')
           ->where([
             ['c_sensor', '=', $station],
-            ['c_sensed_parameter', '=', 'Rain intensity']
+            ['c_sensed_parameter', '=', 'Rain rate']
           ])
           ->orderBy('c_time')
           ->pluck('c_value', 'c_time')
           ->toArray();
       //Get first and last keys of $data
-      $rain_keys = array_keys($rain_data);
-      $rain_last_key = end($rain_keys);
-      reset($rain_data);
-      $rain_first_key = key($rain_data);
+      $rain_rate_keys = array_keys($rain_rate_data);
+      $rain_rate_last_key = end($rain_rate_keys);
+      reset($rain_rate_data);
+      $rain_rate_first_key = key($rain_rate_data);
       //Get chart data with y in UNIX time format [x,y]
-      $rain_dataFinal = array();
-      foreach ($rain_data as $key => $val) {
-        $rain_dataFinal[] = array(strtotime($key)*1000, $val);
+      $rain_rate_dataFinal = array();
+      foreach ($rain_rate_data as $key => $val) {
+        $rain_rate_dataFinal[] = array(strtotime($key)*1000, $val);
       }
 
+      //Total rain
+      $total_rain_data = DB::table('t_sensor_data')
+          ->where([
+            ['c_sensor', '=', $station],
+            ['c_sensed_parameter', '=', 'Total rain']
+          ])
+          ->orderBy('c_time')
+          ->pluck('c_value', 'c_time')
+          ->toArray();
+      //Get first and last keys of $data
+      $total_rain_keys = array_keys($total_rain_data);
+      $total_rain_last_key = end($total_rain_keys);
+      reset($total_rain_data);
+      $total_rain_first_key = key($total_rain_data);
+      //Get chart data with y in UNIX time format [x,y]
+      $total_rain_dataFinal = array();
+      foreach ($total_rain_data as $key => $val) {
+        $total_rain_dataFinal[] = array(strtotime($key)*1000, $val);
+      }
+
+      //Sound level
+      $sound_level_data = DB::table('t_sensor_data')
+          ->where([
+            ['c_sensor', '=', $station],
+            ['c_sensed_parameter', '=', 'Sound level']
+          ])
+          ->orderBy('c_time')
+          ->pluck('c_value', 'c_time')
+          ->toArray();
+      //Get first and last keys of $data
+      $sound_level_keys = array_keys($sound_level_data);
+      $sound_level_last_key = end($sound_level_keys);
+      reset($sound_level_data);
+      $sound_level_first_key = key($sound_level_data);
+      //Get chart data with y in UNIX time format [x,y]
+      $sound_level_dataFinal = array();
+      foreach ($sound_level_data as $key => $val) {
+        $sound_level_dataFinal[] = array(strtotime($key)*1000, $val);
+      }
 
       //Wind speed
       $wind_data = DB::table('t_sensor_data')
@@ -209,6 +253,15 @@ class WMSController extends Controller
       $lastDate = date("d F Y H:i:s", strtotime($lastDate));
 
 
+      //FOR LIVE
+      $last_temp = DB::table('t_sensor_data')
+                  ->where('c_sensed_parameter', '=', 'Temperature')
+                  ->orderBy('c_time', 'desc')
+                  ->select('c_value')
+                  ->limit(1)
+                  ->value('c_time')
+                  ;
+
       return view('wms.area')
           ->with('stationsArray', $stationsArray)
           // ->with('parametersArray', $parametersArray)
@@ -220,10 +273,13 @@ class WMSController extends Controller
           ->with('temp_dataFinal', json_encode($temp_dataFinal,JSON_NUMERIC_CHECK))
           ->with('pres_dataFinal', json_encode($pres_dataFinal,JSON_NUMERIC_CHECK))
           ->with('hum_dataFinal', json_encode($hum_dataFinal,JSON_NUMERIC_CHECK))
-          ->with('rain_dataFinal', json_encode($rain_dataFinal,JSON_NUMERIC_CHECK))
+          ->with('rain_rate_dataFinal', json_encode($rain_rate_dataFinal,JSON_NUMERIC_CHECK))
+          ->with('total_rain_dataFinal', json_encode($total_rain_dataFinal,JSON_NUMERIC_CHECK))
+          ->with('sound_level_dataFinal', json_encode($sound_level_dataFinal,JSON_NUMERIC_CHECK))
           ->with('wind_dataFinal', json_encode($wind_dataFinal,JSON_NUMERIC_CHECK))
           ->with('dir_dataFinal', json_encode($dir_dataFinal,JSON_NUMERIC_CHECK))
           ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK))
+          ->with('last_temp', json_encode($last_temp,JSON_NUMERIC_CHECK))
           // ->with('status', $status)
           ;
     }
