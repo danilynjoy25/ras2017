@@ -6,12 +6,13 @@
     <a href="{{route('wms.summary')}}">Weather Monitoring</a>
   </li>
   <li class="breadcrumb-item active">Chart</li>
-  <!-- <li class="breadcrumb-item active">Area</li> -->
+  <li class="breadcrumb-item active">Line</li>
 </ol>
 
 <div class="card mb-3">
     <div class="card-header"><i class="fa fa-area-chart"></i> WMS Chart</div>
         <div class="card-body">
+          {{ Form::select('station', $stationsArray, null, array('onchange' => 'this.form.submit();')) }}
           <div id="container" width="100%" height="30"></div>
         </div>
 <div class="card-footer small text-muted">Last updated at <?php echo str_replace('"','',$lastDate); ?> </div>
@@ -31,7 +32,7 @@
           <!-- {/{/ Form::select('station', $stationsArray, null, []) }} -->
           <!-- {/{/ Form::submit('Update', array('class'=>'btn')) }} -->
           <!-- onchange="this.form.submit(); -->
-          {{ Form::select('station', $stationsArray, null, array('onchange' => 'this.form.submit();')) }}
+          <!-- {{ Form::select('station', $stationsArray, null, array('onchange' => 'this.form.submit();')) }} -->
 
           <!-- Station: -->
           <!-- {/{/ Form::select('parameter', $parametersArray, null, []) }/}/ -->
@@ -63,14 +64,14 @@
 
 
 </form>
-<button type=submit name="parameter" value="Temperature" id="temp_button" class="btn btn-info pull-left" style="background-color:#ee6d6d; border:none">Temperature</button>
-<button type=submit name="parameter" value="Pressure" id="pres_button" class="btn btn-info pull-left" style="background-color:#ec7c7c; border:none">Pressure</button>
-<button type=submit name="parameter" value="Humidity" id="hum_button" class="btn btn-info pull-left" style="background-color:#ee876d; border:none">Humidity</button>
-<button type=submit name="parameter" value="Rain rate" id="rain_rate_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Rain rate</button>
-<button type=submit name="parameter" value="Total rain" id="total_rain_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Total rain</button>
-<button type=submit name="parameter" value="Sound level" id="sound_level_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Sound level</button>
-<button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#586d92; border:none">Wind speed</button>
-<button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none;">Wind Direction</button>
+<!-- <button type=submit name="parameter" value="Temperature" id="temp_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Temperature</button>
+<button type=submit name="parameter" value="Pressure" id="pres_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Pressure</button>
+<button type=submit name="parameter" value="Humidity" id="hum_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Humidity</button>
+<button type=submit name="parameter" value="Rain rate" id="rain_rate_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Rain rate</button>
+<button type=submit name="parameter" value="Total rain" id="total_rain_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Total rain</button>
+<button type=submit name="parameter" value="Sound level" id="sound_level_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Sound level</button>
+<button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind speed</button> -->
+<!-- <button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind Direction</button> -->
 </form>
 </div>
 
@@ -104,8 +105,6 @@ var chart;
       var pres_data = <?php echo $pres_dataFinal; ?>;
       var stationName= <?php echo $stationName; ?>
 
-      var last_temp = <?php echo $last_temp; ?>;
-
       var config = {
                     chart: {
                       renderTo: 'container',
@@ -127,23 +126,51 @@ var chart;
                       },
                       type: 'spline'
                     },
-                    colors: ['#ee6d6d','#ec7c7c','#ee876d','#5e8692','#586d92','#4f6283'],
+                    colors: ['#ee6d6d','#ec7c7c','#ee876d','#67a1bd','#5e8692','#586d92','#4f6283'],
                     rangeSelector: {
-                        selected: 5
+                        selected: 1
                     },
                     title: {
                         text: "Sensor data at " + stationName
                     },
                     plotOptions: {
                         series: {
-                            // compare: 'percent',
+                            compare: 'percent',
                             showInNavigator: true,
+                            events: {
+                              legendItemClick: function(event) {
+                                  var selected = this.index;
+                                  var allSeries = this.chart.series;
+
+                                  $.each(allSeries, function(index, series) {
+                                      selected == index ? series.show() : series.hide();
+                                  });
+
+                                  return false;
+                              }
+                          }
                         }
                     },
+
                     navigator: {
                         series: {
                             type: 'spline'
                         }
+                    },
+                    legend: {
+                        enabled: true,
+                        align: 'left',
+                        // backgroundColor: '#FCFFC5',
+                        // borderColor: 'black',
+                        // borderWidth: 2,
+                        layout: 'vertical',
+                        verticalAlign: 'top',
+                        y: 100,
+                        // shadow: true
+                    },
+
+                    rangeSelector: {
+                        selected: 1
                     },
                     series: [{
                         name: "Temperature",
@@ -164,7 +191,8 @@ var chart;
                                 [0, Highcharts.getOptions().colors[0]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
-                        }
+                        },
+                        visible: false
                     },
                     {
                         name: "Pressure",
@@ -173,6 +201,10 @@ var chart;
                         threshold: null,
                         tooltip: {
                             valueDecimals: 2
+                        },
+                        marker: {
+                            enabled: true,
+                            radius: 3
                         },
                         fillColor: {
                             linearGradient: {
@@ -185,12 +217,14 @@ var chart;
                                 [0, Highcharts.getOptions().colors[1]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
-                        }
+                        },
+                        visible: true
                     },
                     {
                         name: "Humidity",
                         data:  hum_data,
-                        type: 'spline',
+                        dashStyle: 'longdash',
+                        type: 'line',
                         threshold: null,
                         tooltip: {
                             valueDecimals: 2
@@ -206,12 +240,15 @@ var chart;
                                 [0, Highcharts.getOptions().colors[2]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[2]).setOpacity(0).get('rgba')]
                             ]
-                        }
+                        },
+                        visible: false
                     },
                     {
                         name: "Rain rate",
                         data:  rain_rate_data,
-                        type: 'spline',
+                        // type: 'areaspline',
+                        //dashStyle: 'longdash',
+                        step: true,
                         threshold: null,
                         tooltip: {
                             valueDecimals: 2
@@ -224,15 +261,16 @@ var chart;
                                 y2: 1
                             },
                             stops: [
-                                [0, Highcharts.getOptions().colors[3]],
+                                [0, Highcharts.getOptions().colors[0]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
-                        }
+                        },
+                        visible: false
                     },
                     {
                         name: "Total rain",
                         data:  total_rain_data,
-                        type: 'spline',
+                        type: 'areaspline',
                         threshold: null,
                         tooltip: {
                             valueDecimals: 2
@@ -245,15 +283,16 @@ var chart;
                                 y2: 1
                             },
                             stops: [
-                                [0, Highcharts.getOptions().colors[3]],
+                                [0, Highcharts.getOptions().colors[0]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
-                        }
+                        },
+                        visible: false
                     },
                     {
                         name: "Sound level",
                         data:  sound_level_data,
-                        type: 'spline',
+                        type: 'column',
                         threshold: null,
                         tooltip: {
                             valueDecimals: 2
@@ -269,32 +308,13 @@ var chart;
                                 [0, Highcharts.getOptions().colors[3]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
-                        }
+                        },
+                        visible: false
                     },
                     {
                         name: "Wind speed",
                         data:  wind_data,
-                        type: 'spline',
-                        threshold: null,
-                        tooltip: {
-                            valueDecimals: 2
-                        },
-                        fillColor: {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                                [0, Highcharts.getOptions().colors[4]],
-                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                            ]
-                        }
-                    },
-                    {
-                        name: "Wind direction",
-                        data:  dir_data,
+                        dashStyle: 'shortdot',
                         type: 'spline',
                         threshold: null,
                         tooltip: {
@@ -311,11 +331,39 @@ var chart;
                                 [0, Highcharts.getOptions().colors[5]],
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
-                        }
-                    }]
+                        },
+                        visible: false
+                    },
+                    // {
+                    //     name: "Wind direction",
+                    //     type: 'windbarb'
+                    // }
+                    // {
+                    //     name: "Wind direction",
+                    //     data:  dir_data,
+                    //     type: 'spline',
+                    //     threshold: null,
+                    //     tooltip: {
+                    //         valueDecimals: 2
+                    //     },
+                    //     fillColor: {
+                    //         linearGradient: {
+                    //             x1: 0,
+                    //             y1: 0,
+                    //             x2: 0,
+                    //             y2: 1
+                    //         },
+                    //         stops: [
+                    //             [0, Highcharts.getOptions().colors[5]],
+                    //             [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    //         ]
+                    //     },
+                    //     visible: false
+                    // }
+                  ]
 
           };
-      chart = new Highcharts.StockChart(config);
+          chart = new Highcharts.StockChart(config);
   });
 
   var $temp_button = $('#temp_button');

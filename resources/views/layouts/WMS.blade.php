@@ -42,31 +42,39 @@
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Summary">
           <a class="nav-link" href="{{route('wms.summary')}}">
-            <i class="fa fa-fw fa-dashboard"></i>
+            <i class="fa fa-fw fa-calendar"></i>
             <span class="nav-link-text">Summary</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <!-- <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">Charts</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
             <li>
-              <a href="{/{/route('wms.area')}}">
-                <i class="fa fa-area-chart"></i> Area</a>
+              <a href="{{route('wms.chart')}}">
+                <i class="fa fa-line-chart"></i> Line</a>
             </li>
-          </ul> -->
-          <a class="nav-link" href="{{route('wms.area')}}">
-            <i class="fa fa-fw fa-area-chart"></i>
+            <li>
+              <a href="{{route('wms.wind')}}">
+                <i class="fa fa-dashboard"></i> Wind</a>
+            </li>
+            <li>
+              <a href="{{route('wms.live')}}">
+                <i class="fa fa-bar-chart"></i> Live</a>
+            </li>
+          </ul>
+          <!-- <a class="nav-link" href="{{route('wms.chart')}}">
+            <i class="fa fa-fw fa-line-chart"></i>
             <span class="nav-link-text">Chart</span>
-          </a>
+          </a> -->
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live">
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live">
           <a class="nav-link" href="">
             <i class="fa fa-fw fa-line-chart"></i>
             <span class="nav-link-text">Live</span>
-          </a>
+          </a> -->
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="{{route('wms.tables')}}">

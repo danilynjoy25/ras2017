@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 
 class WMSController extends Controller
 {
+
   public function summary(){
     $parameter = request('parameter');
 
@@ -30,12 +31,59 @@ class WMSController extends Controller
                           WHERE  YEARWEEK(`c_time`, 1) = YEARWEEK(CURDATE(), 1)
                           AND c_sensed_parameter = '$parameter'"
                       );
+
+    $lastDate = DB::table('t_sensor_data')
+        ->orderBy('c_time', 'desc')
+        ->select('c_time')
+        ->limit(1)
+        ->value('c_time');
+    $lastDate = date("d F Y H:i:s", strtotime($lastDate));
+
     return view('wms.summary')
-            ->with('parameter', json_encode($parameter))
-           ->with('daily_data', json_encode($daily_data));
+          ->with('parameter', json_encode($parameter))
+          ->with('daily_data', json_encode($daily_data))
+          ->with('lastDate', json_encode($lastDate));
   }
 
-    public function area()
+  // public function summary(){
+  //   $parameter = request('parameter');
+  //
+  //   if($parameter == null){
+  //     $parameter = 'Temperature';
+  //   }
+  //   $daily_data_arr = DB::select("SELECT AVG(sd.c_value) as count, DATE(sd.c_time) AS date
+  //                       FROM t_sensor_data sd
+  //                       JOIN t_sensors s
+  //                       ON s.c_id = sd.c_sensor
+  //                       WHERE s.c_type = 'WMS' AND sd.c_sensed_parameter = '$parameter' AND YEAR(sd.c_time) = '2018'
+  //                       GROUP BY DATE(sd.c_time);"
+  //                   );
+  //   $daily_data = array_pluck($daily_data_arr,'count','date');
+  //   foreach ($daily_data as $key => $val) {
+  //     $key = strtotime($key);
+  //   }
+  //
+  //   $weekly_average = DB::select(
+  //                         "SELECT AVG(sd.c_value)
+  //                         FROM   t_sensor_data AS sd
+  //                         WHERE  YEARWEEK(`c_time`, 1) = YEARWEEK(CURDATE(), 1)
+  //                         AND c_sensed_parameter = '$parameter'"
+  //                     );
+  //
+  //   $lastDate = DB::table('t_sensor_data')
+  //       ->orderBy('c_time', 'desc')
+  //       ->select('c_time')
+  //       ->limit(1)
+  //       ->value('c_time');
+  //   $lastDate = date("d F Y H:i:s", strtotime($lastDate));
+  //
+  //   return view('wms.summary')
+  //           ->with('parameter', json_encode($parameter))
+  //           ->with('daily_data', json_encode($daily_data))
+  //           ->with('lastDate', json_encode($lastDate));
+  // }
+
+    public function chart()
     {
       //Get station and parameter from form
       $station = request('station');
@@ -262,7 +310,7 @@ class WMSController extends Controller
                   ->value('c_time')
                   ;
 
-      return view('wms.area')
+      return view('wms.chart')
           ->with('stationsArray', $stationsArray)
           // ->with('parametersArray', $parametersArray)
           ->with('station', json_encode($station,JSON_NUMERIC_CHECK))
@@ -279,78 +327,243 @@ class WMSController extends Controller
           ->with('wind_dataFinal', json_encode($wind_dataFinal,JSON_NUMERIC_CHECK))
           ->with('dir_dataFinal', json_encode($dir_dataFinal,JSON_NUMERIC_CHECK))
           ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK))
-          ->with('last_temp', json_encode($last_temp,JSON_NUMERIC_CHECK))
           // ->with('status', $status)
           ;
     }
 
-    // public function area()
-    // {
-    //   //Get station and parameter from form
-    //   $station = request('station');
-    //   $parameter = request('parameter');
-    //   if($parameter == null){
-    //     $parameter = 'Temperature';
-    //   }
-    //   if($station == null){
-    //     $station = 0;
-    //   }
-    //   //Get chart data (x, y) as array(key, value)
-    //   $data = DB::table('t_sensor_data')
-    //       ->where([
-    //         ['c_sensor', '=', $station],
-    //         ['c_sensed_parameter', '=', $parameter]
-    //       ])
-    //       ->orderBy('c_time')
-    //       ->pluck('c_value', 'c_time')
-    //       ->toArray();
-    //   //Get first and last keys of $data
-    //   $keys = array_keys($data);
-    //   $last_key = end($keys);
-    //   reset($data);
-    //   $first_key = key($data);
-    //   //Get chart data with y in UNIX time format [x,y]
-    //   $dataFinal = array();
-    //   foreach ($data as $key => $val) {
-    //     $dataFinal[] = array(strtotime($key)*1000, $val);
-    //   }
-    //   //List stations and parameters
-    //   //pluck(key, value)
-    //   //Form-> name=value value=key
-    //   $stationsArray= DB::table('t_sensor_data')
-    //       ->join('t_sensors', 't_sensors.c_id', '=', 't_sensor_data.c_sensor')
-    //       ->where('t_sensors.c_type', '=', 'WMS')
-    //       ->pluck('t_sensors.c_name', 't_sensors.c_id');
-    //   $parametersArray = DB::table('t_sensor_data')
-    //       ->join('t_sensors', 't_sensors.c_id', '=', 't_sensor_data.c_sensor')
-    //       ->where('t_sensors.c_type', '=', 'WMS')
-    //       ->groupBy('c_sensed_parameter')
-    //       ->distinct()
-    //       ->pluck('c_sensed_parameter', 'c_sensed_parameter');
-    //   $stationName = DB::table('t_sensors')
-    //       ->where('c_id','=',$station)
-    //       ->select('c_name')
-    //       ->value('c_name');
-    //   //Get last data's date
-    //   $lastDate = DB::table('t_sensor_data')
-    //       ->orderBy('c_time', 'desc')
-    //       ->select('c_time')
-    //       ->limit(1)
-    //       ->value('c_time');
-    //   $lastDate = date("d F Y H:i:s", strtotime($lastDate));
-    //   // $status = APIController::getSensorData();
-    //   return view('wms.area')
-    //       ->with('stationsArray', $stationsArray)
-    //       ->with('parametersArray', $parametersArray)
-    //       ->with('station', json_encode($station,JSON_NUMERIC_CHECK))
-    //       ->with('stationName', json_encode($stationName,JSON_NUMERIC_CHECK))
-    //       ->with('parameter', json_encode($parameter,JSON_NUMERIC_CHECK))
-    //       ->with('valueArray', json_encode($data,JSON_NUMERIC_CHECK))
-    //       ->with('dataFinal', json_encode($dataFinal,JSON_NUMERIC_CHECK))
-    //       ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK))
-    //       // ->with('status', $status);
-    //       ;
-    // }
+    public static function wind(){
+      $stationsArray= DB::table('t_sensor_data')
+          ->join('t_sensors', 't_sensors.c_id', '=', 't_sensor_data.c_sensor')
+          ->where('t_sensors.c_type', '=', 'WMS')
+          ->pluck('t_sensors.c_name', 't_sensors.c_id');
+
+      $station = request('station');
+
+      if($station == null){
+        $station = 0;
+      }
+
+      $stationName = DB::table('t_sensors')
+          ->where('c_id','=',$station)
+          ->select('c_name')
+          ->value('c_name');
+
+      $total = DB::select(
+              "SELECT SUM(count) as sum FROM
+              (SELECT
+                    CASE
+                      WHEN (s2.c_value <11.25) THEN 'N'
+                      WHEN (s2.c_value >=348.75 AND s2.c_value <11.25) THEN 'N'
+                      WHEN (s2.c_value >=11.25 AND s2.c_value <33.75) THEN 'NNE'
+                      WHEN (s2.c_value >=33.75 AND s2.c_value <56.25) THEN 'NE'
+                      WHEN (s2.c_value >=56.25 AND s2.c_value <78.25) THEN 'ENE'
+                      WHEN (s2.c_value >=78.25 AND s2.c_value <101.25) THEN 'E'
+                      WHEN (s2.c_value >=101.25 AND s2.c_value <123.75) THEN 'ESE'
+                      WHEN (s2.c_value >=123.75 AND s2.c_value <146.25) THEN 'SE'
+                      WHEN (s2.c_value >=146.25 AND s2.c_value <168.75) THEN 'SSE'
+                      WHEN (s2.c_value >=168.75 AND s2.c_value <191.25) THEN 'S'
+                      WHEN (s2.c_value >=191.25 AND s2.c_value <213.75) THEN 'SSW'
+                      WHEN (s2.c_value >=213.75 AND s2.c_value <236.25) THEN 'SW'
+                      WHEN (s2.c_value >=236.25 AND s2.c_value <258.75) THEN 'WSW'
+                      WHEN (s2.c_value >=258.75 AND s2.c_value <281.25) THEN 'W'
+                      WHEN (s2.c_value >=281.25 AND s2.c_value <303.75) THEN 'WNW'
+                      WHEN (s2.c_value >=303.75 AND s2.c_value <326.25) THEN 'NW'
+                      WHEN (s2.c_value >=326.25 AND s2.c_value <348.75) THEN 'NNW'
+                    END AS 'direction',
+                    count(*) as count
+                    FROM t_sensor_data s1
+                    JOIN (SELECT *
+                    FROM t_sensor_data
+                    WHERE c_sensed_parameter = 'Wind direction') s2
+                    ON s1.c_time = s2.c_time
+                    WHERE s1.c_sensed_parameter = 'Wind speed'
+                    AND s2.c_value != 359
+                    GROUP BY direction) AS total"
+      );
+
+      $total = collect($total)->first();
+
+      $wind_rose_1 = DB::select(
+        "   SELECT
+              CASE
+                WHEN (s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=348.75 AND s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=11.25 AND s2.c_value <33.75) THEN 'NNE'
+                WHEN (s2.c_value >=33.75 AND s2.c_value <56.25) THEN 'NE'
+                WHEN (s2.c_value >=56.25 AND s2.c_value <78.25) THEN 'ENE'
+                WHEN (s2.c_value >=78.25 AND s2.c_value <101.25) THEN 'E'
+                WHEN (s2.c_value >=101.25 AND s2.c_value <123.75) THEN 'ESE'
+                WHEN (s2.c_value >=123.75 AND s2.c_value <146.25) THEN 'SE'
+                WHEN (s2.c_value >=146.25 AND s2.c_value <168.75) THEN 'SSE'
+                WHEN (s2.c_value >=168.75 AND s2.c_value <191.25) THEN 'S'
+                WHEN (s2.c_value >=191.25 AND s2.c_value <213.75) THEN 'SSW'
+                WHEN (s2.c_value >=213.75 AND s2.c_value <236.25) THEN 'SW'
+                WHEN (s2.c_value >=236.25 AND s2.c_value <258.75) THEN 'WSW'
+                WHEN (s2.c_value >=258.75 AND s2.c_value <281.25) THEN 'W'
+                WHEN (s2.c_value >=281.25 AND s2.c_value <303.75) THEN 'WNW'
+                WHEN (s2.c_value >=303.75 AND s2.c_value <326.25) THEN 'NW'
+                WHEN (s2.c_value >=326.25 AND s2.c_value <348.75) THEN 'NNW'
+              END AS 'direction',
+              count(*) as count
+              FROM t_sensor_data s1
+              JOIN (SELECT *
+              FROM t_sensor_data
+              WHERE c_sensed_parameter = 'Wind direction') s2
+              ON s1.c_time = s2.c_time
+              WHERE s1.c_sensed_parameter = 'Wind speed'
+              AND s2.c_value != 359
+              AND (s1.c_value >= 0 AND s1.c_value < 2)
+              GROUP BY direction;"
+      );
+
+      $wind_rose_1 = collect($wind_rose_1)->pluck('count','direction')->toArray();
+
+      $data_1 = array();
+      foreach($wind_rose_1 as $key=>$val){
+        $freq = round((($val/$total->sum)*100), 2);
+        $data_1[] = array($key, $freq);
+      }
+
+      $wind_rose_2 = DB::select(
+        "   SELECT
+              CASE
+                WHEN (s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=348.75 AND s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=11.25 AND s2.c_value <33.75) THEN 'NNE'
+                WHEN (s2.c_value >=33.75 AND s2.c_value <56.25) THEN 'NE'
+                WHEN (s2.c_value >=56.25 AND s2.c_value <78.25) THEN 'ENE'
+                WHEN (s2.c_value >=78.25 AND s2.c_value <101.25) THEN 'E'
+                WHEN (s2.c_value >=101.25 AND s2.c_value <123.75) THEN 'ESE'
+                WHEN (s2.c_value >=123.75 AND s2.c_value <146.25) THEN 'SE'
+                WHEN (s2.c_value >=146.25 AND s2.c_value <168.75) THEN 'SSE'
+                WHEN (s2.c_value >=168.75 AND s2.c_value <191.25) THEN 'S'
+                WHEN (s2.c_value >=191.25 AND s2.c_value <213.75) THEN 'SSW'
+                WHEN (s2.c_value >=213.75 AND s2.c_value <236.25) THEN 'SW'
+                WHEN (s2.c_value >=236.25 AND s2.c_value <258.75) THEN 'WSW'
+                WHEN (s2.c_value >=258.75 AND s2.c_value <281.25) THEN 'W'
+                WHEN (s2.c_value >=281.25 AND s2.c_value <303.75) THEN 'WNW'
+                WHEN (s2.c_value >=303.75 AND s2.c_value <326.25) THEN 'NW'
+                WHEN (s2.c_value >=326.25 AND s2.c_value <348.75) THEN 'NNW'
+              END AS 'direction',
+              count(*) as count
+              FROM t_sensor_data s1
+              JOIN (SELECT *
+              FROM t_sensor_data
+              WHERE c_sensed_parameter = 'Wind direction') s2
+              ON s1.c_time = s2.c_time
+              WHERE s1.c_sensed_parameter = 'Wind speed'
+              AND s2.c_value != 359
+              AND (s1.c_value >= 2 AND s1.c_value < 4)
+              GROUP BY direction;"
+      );
+
+      $wind_rose_2 = collect($wind_rose_2)->pluck('count','direction')->toArray();
+
+      $data_2 = array();
+      foreach($wind_rose_2 as $key=>$val){
+        $freq = round((($val/$total->sum)*100), 2);
+        $data_2[] = array($key, $freq);
+      }
+
+      $wind_rose_3 = DB::select(
+        "   SELECT
+              CASE
+                WHEN (s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=348.75 AND s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=11.25 AND s2.c_value <33.75) THEN 'NNE'
+                WHEN (s2.c_value >=33.75 AND s2.c_value <56.25) THEN 'NE'
+                WHEN (s2.c_value >=56.25 AND s2.c_value <78.25) THEN 'ENE'
+                WHEN (s2.c_value >=78.25 AND s2.c_value <101.25) THEN 'E'
+                WHEN (s2.c_value >=101.25 AND s2.c_value <123.75) THEN 'ESE'
+                WHEN (s2.c_value >=123.75 AND s2.c_value <146.25) THEN 'SE'
+                WHEN (s2.c_value >=146.25 AND s2.c_value <168.75) THEN 'SSE'
+                WHEN (s2.c_value >=168.75 AND s2.c_value <191.25) THEN 'S'
+                WHEN (s2.c_value >=191.25 AND s2.c_value <213.75) THEN 'SSW'
+                WHEN (s2.c_value >=213.75 AND s2.c_value <236.25) THEN 'SW'
+                WHEN (s2.c_value >=236.25 AND s2.c_value <258.75) THEN 'WSW'
+                WHEN (s2.c_value >=258.75 AND s2.c_value <281.25) THEN 'W'
+                WHEN (s2.c_value >=281.25 AND s2.c_value <303.75) THEN 'WNW'
+                WHEN (s2.c_value >=303.75 AND s2.c_value <326.25) THEN 'NW'
+                WHEN (s2.c_value >=326.25 AND s2.c_value <348.75) THEN 'NNW'
+              END AS 'direction',
+              count(*) as count
+              FROM t_sensor_data s1
+              JOIN (SELECT *
+              FROM t_sensor_data
+              WHERE c_sensed_parameter = 'Wind direction') s2
+              ON s1.c_time = s2.c_time
+              WHERE s1.c_sensed_parameter = 'Wind speed'
+              AND s2.c_value != 359
+              AND (s1.c_value >= 4 AND s1.c_value < 6)
+              GROUP BY direction;"
+      );
+
+      $wind_rose_3 = collect($wind_rose_3)->pluck('count','direction')->toArray();
+
+      $data_3 = array();
+      foreach($wind_rose_3 as $key=>$val){
+        $freq = round((($val/$total->sum)*100), 2);
+        $data_3[] = array($key, $freq);
+      }
+
+      $wind_rose_4 = DB::select(
+        "   SELECT
+              CASE
+                WHEN (s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=348.75 AND s2.c_value <11.25) THEN 'N'
+                WHEN (s2.c_value >=11.25 AND s2.c_value <33.75) THEN 'NNE'
+                WHEN (s2.c_value >=33.75 AND s2.c_value <56.25) THEN 'NE'
+                WHEN (s2.c_value >=56.25 AND s2.c_value <78.25) THEN 'ENE'
+                WHEN (s2.c_value >=78.25 AND s2.c_value <101.25) THEN 'E'
+                WHEN (s2.c_value >=101.25 AND s2.c_value <123.75) THEN 'ESE'
+                WHEN (s2.c_value >=123.75 AND s2.c_value <146.25) THEN 'SE'
+                WHEN (s2.c_value >=146.25 AND s2.c_value <168.75) THEN 'SSE'
+                WHEN (s2.c_value >=168.75 AND s2.c_value <191.25) THEN 'S'
+                WHEN (s2.c_value >=191.25 AND s2.c_value <213.75) THEN 'SSW'
+                WHEN (s2.c_value >=213.75 AND s2.c_value <236.25) THEN 'SW'
+                WHEN (s2.c_value >=236.25 AND s2.c_value <258.75) THEN 'WSW'
+                WHEN (s2.c_value >=258.75 AND s2.c_value <281.25) THEN 'W'
+                WHEN (s2.c_value >=281.25 AND s2.c_value <303.75) THEN 'WNW'
+                WHEN (s2.c_value >=303.75 AND s2.c_value <326.25) THEN 'NW'
+                WHEN (s2.c_value >=326.25 AND s2.c_value <348.75) THEN 'NNW'
+              END AS 'direction',
+              count(*) as count
+              FROM t_sensor_data s1
+              JOIN (SELECT *
+              FROM t_sensor_data
+              WHERE c_sensed_parameter = 'Wind direction') s2
+              ON s1.c_time = s2.c_time
+              WHERE s1.c_sensed_parameter = 'Wind speed'
+              AND s2.c_value != 359
+              AND (s1.c_value >= 6)
+              GROUP BY direction;"
+      );
+
+      $wind_rose_4 = collect($wind_rose_4)->pluck('count','direction')->toArray();
+
+      $data_4 = array();
+      foreach($wind_rose_4 as $key=>$val){
+        $freq = round((($val/$total->sum)*100), 2);
+        $data_4[] = array($key, $freq);
+      }
+
+      $lastDate = DB::table('t_sensor_data')
+          ->orderBy('c_time', 'desc')
+          ->select('c_time')
+          ->limit(1)
+          ->value('c_time');
+      $lastDate = date("d F Y H:i:s", strtotime($lastDate));
+
+      return view('wms.wind')
+             ->with('stationsArray', $stationsArray)
+             ->with('stationName', json_encode($stationName,JSON_NUMERIC_CHECK))
+             ->with('data_1', json_encode($data_1,JSON_NUMERIC_CHECK))
+             ->with('data_2', json_encode($data_2,JSON_NUMERIC_CHECK))
+             ->with('data_3', json_encode($data_3,JSON_NUMERIC_CHECK))
+             ->with('data_4', json_encode($data_4,JSON_NUMERIC_CHECK))
+             ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK))
+             ->with('total', json_encode($total,JSON_NUMERIC_CHECK));
+    }
 
     public static function tables()
     {

@@ -15,7 +15,7 @@
 
         <div class="card-body">
 
-            <div style="float:left; margin-right: 1em;"> <a><img src="http://via.placeholder.com/200"></a></div>
+            <!-- <div style="float:left; margin-right: 1em;"> <a><img src="http://via.placeholder.com/200"></a></div> -->
               <h1>{{Auth::user()->name}}</h1>
               <h4>{{ Auth::user()->getRoleNames()->implode(',')}}</h4>
               <h5>{{ Auth::user()->email}}</h5>

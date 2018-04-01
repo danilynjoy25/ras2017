@@ -55,12 +55,18 @@ Route::get('dashboard',
 Route::get('dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
 
 //WMS ROUTES
+// Route::get('calendar', 'WMSController@calendar')->name('wms.calendar');
 //SUMMARY
 Route::get('wms', 'WMSController@summary')->name('wms.summary');
+
 //CHARTS
 
-Route::get('wms/area', 'WMSController@area')->name('wms.area');
-Route::get('wms/bar', 'WMSController@bar')->name('wms.bar');
+Route::get('wms/chart', 'WMSController@chart')->name('wms.chart');
+Route::get('wms/wind', 'WMSController@wind')->name('wms.wind');
+Route::get('wms/live', 'LiveController@live')->name('wms.live');
+
+//Live
+Route::get('wms/live/lastTemp', 'LiveController@lastTemp')->name('wms.lastTemp');
 
 //TABLES
 
