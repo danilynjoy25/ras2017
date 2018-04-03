@@ -10,7 +10,7 @@
           <h4 class="card-title">
             <a href="dms">Dam monitoring</a>
           </h4>
-          <p class="card-text">Dam monitoring system and visualization of collected by three dam sensors: a flow rate sensor, an ultrasonic sensor, and a soil moisture sensor.</p>
+          <p class="card-text">Dam monitoring system and visualization of collected data from three dam sensors: a flow rate sensor, an ultrasonic sensor, and a soil moisture sensor.</p>
         </div>
       </div>
     </div>
