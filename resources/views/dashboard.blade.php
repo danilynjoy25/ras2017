@@ -19,12 +19,16 @@
               <h1>{{Auth::user()->name}}</h1>
               <h4>{{ Auth::user()->getRoleNames()->implode(',')}}</h4>
               <h5>{{ Auth::user()->email}}</h5>
-              <?php
+              <!-- <?php
                 $timezone = date_default_timezone_get();
-                $date = date("Y-m-d H:i:s");
+                // $date = date("Y-m-d H:i:s");
+                $date = new DateTime();
+                $date->setTimezone(new DateTimeZone('Asia/Manila'));
+
+                $fdate = $date->format('Y-m-d H:i:s');
                 echo "The current server timezone is: " . $timezone .  "</br>";
-                echo "Today is " . $date;
-              ?>
+                echo "Today is " . $fdate;
+              ?> -->
         </div>
 
       </div>

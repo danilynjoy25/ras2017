@@ -25,10 +25,16 @@ class APIController extends Controller
 
         foreach($data as $key=>$field){
             //echo $key . ": " . $field . "\n";
+
+            $date = new DateTime();
+            $date->setTimezone(new DateTimeZone('Asia/Manila'));
+
+            $fdate = $date->format('Y-m-d H:i:s');
+
             if($key == "dailyRain"){
                 DB::table('t_sensor_data')
                 ->insert([
-                     'c_time' => DB::raw('NOW()'),
+                     'c_time' => $fdate,
                      'c_sensor' => 0,
                      'c_sensed_parameter' => 'Daily rain',
                      'c_value' =>  $field
@@ -37,7 +43,7 @@ class APIController extends Controller
             }else if($key == "temperature"){
                 DB::table('t_sensor_data')
                 ->insert([
-                     'c_time' => DB::raw('NOW()'),
+                     'c_time' => $fdate,
                      'c_sensor' => 0,
                      'c_sensed_parameter' => 'Temperature' ,
                      'c_value' =>  $field
@@ -46,7 +52,7 @@ class APIController extends Controller
             }else if($key == "currentSpeed"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Current speed' ,
                    'c_value' =>  $field
@@ -55,7 +61,7 @@ class APIController extends Controller
             }else if($key == "rainRate"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Rain rate' ,
                    'c_value' =>  $field
@@ -64,7 +70,7 @@ class APIController extends Controller
             }else if($key == "currentDirection"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Wind direction' ,
                    'c_value' =>  $field
@@ -73,7 +79,7 @@ class APIController extends Controller
             }else if($key == "humidity"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Humidity' ,
                    'c_value' =>  $field
@@ -82,7 +88,7 @@ class APIController extends Controller
             }else if($key == "pressure"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Pressure' ,
                    'c_value' =>  $field
@@ -91,7 +97,7 @@ class APIController extends Controller
             }else if($key == "windSpeed"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Wind speed' ,
                    'c_value' =>  $field
@@ -100,7 +106,7 @@ class APIController extends Controller
             }else if($key == "decibel"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Sound level' ,
                    'c_value' =>  $field
@@ -109,7 +115,7 @@ class APIController extends Controller
             }else if($key == "windDirection"){
               DB::table('t_sensor_data')
               ->insert([
-                   'c_time' => DB::raw('NOW()'),
+                   'c_time' => $fdate,
                    'c_sensor' => 0,
                    'c_sensed_parameter' => 'Wind direction' ,
                    'c_value' =>  $field
