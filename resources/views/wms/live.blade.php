@@ -23,23 +23,7 @@
 <script type="text/javascript">
 
 var chart;
-
-function requestData() {
-    $.ajax({
-        url: '{{route("wms.lastTemp")}}',
-        success: function(point) {
-            var series = chart.series[0];
-
-            // add the point
-            chart.series[0].addPoint(point, true, true);
-
-            // call it again after one second
-            setTimeout(requestData, 1000);
-            console.log(point);
-        },
-        cache: false
-    });
-};
+var url;
 
   $(document).ready(function(){
 
@@ -53,37 +37,28 @@ function requestData() {
       var pres_data = <?php echo $pres_dataFinal; ?>;
       var stationName= <?php echo $stationName; ?>
 
+      function getData(){
+          $.ajax({
+               type: "GET",
+               url: url,
+               success: function(data){
+                 var series = chart.series[0];
+                 var returned = JSON.parse(data);
+                 var shift = series.data.length > 20;
+                 var date = Date.parse(returned[0].c_time);
+                 chart.series[0].addPoint([date, returned[0].c_value], true, shift);
+                 console.log(date);
+               }
+          });
+           setTimeout(getData, 5000);
+      };
+
       var config = {
                     chart: {
                         renderTo: 'container',
                         type: 'spline',
                         events: {
-                            //load: requestData
-                            load: function () {
-                               // set up the updating of the chart each second
-                               // var series = this.series[0];
-                               //
-                               // setInterval(function () {
-                               //    var x = (new Date()).getTime(), // current time
-                               //    y = Math.random();
-                               //    series.addPoint([x, y], true, true);
-                               // }, 1000);
-                              setInterval(function () {
-                                 $.ajax({
-                                     url: '{{route("wms.lastTemp")}}',
-                                     success: function(point) {
-                                         var series = chart.series[0];
-
-                                         // call it again after one second
-
-                                           // add the point
-                                           series.addPoint(point, true, true);
-
-                                         console.log(point);
-                                     },
-                                     cache: false
-                                 })}, 1000);
-                            }
+                            load: getData
                         }
                     },
                     colors: ['#ee6d6d','#ec7c7c','#ee876d','#67a1bd','#5e8692','#586d92','#4f6283'],
@@ -138,7 +113,8 @@ function requestData() {
                         type: 'spline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " °C"
                         },
                         fillColor: {
                             linearGradient: {
@@ -160,7 +136,8 @@ function requestData() {
                         type: 'spline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " mb"
                         },
                         marker: {
                             enabled: true,
@@ -187,7 +164,8 @@ function requestData() {
                         dashStyle: 'longdash',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " %"
                         },
                         fillColor: {
                             linearGradient: {
@@ -211,7 +189,8 @@ function requestData() {
                         step: true,
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " mm/hr"
                         },
                         fillColor: {
                             linearGradient: {
@@ -228,12 +207,13 @@ function requestData() {
                         visible: false
                     },
                     {
-                        name: "Total rain",
+                        name: "Daily rainfall",
                         data:  total_rain_data,
                         type: 'areaspline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " mm"
                         },
                         fillColor: {
                             linearGradient: {
@@ -255,7 +235,8 @@ function requestData() {
                         type: 'column',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " dB"
                         },
                         fillColor: {
                             linearGradient: {
@@ -278,7 +259,8 @@ function requestData() {
                         type: 'spline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " km/h"
                         },
                         fillColor: {
                             linearGradient: {
@@ -299,7 +281,25 @@ function requestData() {
           };
 
           chart = new Highcharts.StockChart(config);
+
+          if (chart.series[0].visible) {
+            url = "{{route('wms.lastTemp')}}";
+          } else if (chart.series[1].visible) {
+            url = "{{route('wms.lastPres')}}";
+          } else if (chart.series[2].visible) {
+            url = "{{route('wms.lastHum')}}";
+          } else if (chart.series[3].visible) {
+            url = "{{route('wms.lastRR')}}";
+          } else if (chart.series[4].visible) {
+            url = "{{route('wms.lastTR')}}";
+          } else if (chart.series[5].visible) {
+            url = "{{route('wms.lastSound')}}";
+          } else if (chart.series[6].visible) {
+            url = "{{route('wms.lastWS')}}";
+          }
+
   });
+
 
   // colors: ['#ee6d6d','#ec7c7c','#ee876d','#5e8692','#586d92','#4f6283']
 

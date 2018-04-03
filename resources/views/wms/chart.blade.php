@@ -178,7 +178,8 @@ var chart;
                         type: 'spline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " °C"
                         },
                         fillColor: {
                             linearGradient: {
@@ -192,7 +193,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                     {
                         name: "Pressure",
@@ -200,7 +201,8 @@ var chart;
                         type: 'spline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " mb"
                         },
                         marker: {
                             enabled: true,
@@ -218,16 +220,17 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: true
+                        visible: false
                     },
                     {
                         name: "Humidity",
                         data:  hum_data,
-                        dashStyle: 'longdash',
                         type: 'line',
+                        dashStyle: 'longdash',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " %"
                         },
                         fillColor: {
                             linearGradient: {
@@ -251,7 +254,8 @@ var chart;
                         step: true,
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " mm/hr"
                         },
                         fillColor: {
                             linearGradient: {
@@ -268,12 +272,13 @@ var chart;
                         visible: false
                     },
                     {
-                        name: "Total rain",
+                        name: "Daily rainfall",
                         data:  total_rain_data,
                         type: 'areaspline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " mm"
                         },
                         fillColor: {
                             linearGradient: {
@@ -295,7 +300,8 @@ var chart;
                         type: 'column',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " dB"
                         },
                         fillColor: {
                             linearGradient: {
@@ -318,7 +324,8 @@ var chart;
                         type: 'spline',
                         threshold: null,
                         tooltip: {
-                            valueDecimals: 2
+                            valueDecimals: 2,
+                            valueSuffix: " km/h"
                         },
                         fillColor: {
                             linearGradient: {
@@ -334,32 +341,6 @@ var chart;
                         },
                         visible: false
                     },
-                    // {
-                    //     name: "Wind direction",
-                    //     type: 'windbarb'
-                    // }
-                    // {
-                    //     name: "Wind direction",
-                    //     data:  dir_data,
-                    //     type: 'spline',
-                    //     threshold: null,
-                    //     tooltip: {
-                    //         valueDecimals: 2
-                    //     },
-                    //     fillColor: {
-                    //         linearGradient: {
-                    //             x1: 0,
-                    //             y1: 0,
-                    //             x2: 0,
-                    //             y2: 1
-                    //         },
-                    //         stops: [
-                    //             [0, Highcharts.getOptions().colors[5]],
-                    //             [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                    //         ]
-                    //     },
-                    //     visible: false
-                    // }
                   ]
 
           };

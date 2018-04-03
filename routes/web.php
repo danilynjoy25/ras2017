@@ -67,6 +67,12 @@ Route::get('wms/live', 'LiveController@live')->name('wms.live');
 
 //Live
 Route::get('wms/live/lastTemp', 'LiveController@lastTemp')->name('wms.lastTemp');
+Route::get('wms/live/lastPres', 'LiveController@lastPres')->name('wms.lastPres');
+Route::get('wms/live/lastHum', 'LiveController@lastHum')->name('wms.lastHum');
+Route::get('wms/live/lastRR', 'LiveController@lastRR')->name('wms.lastRR');
+Route::get('wms/live/lastTR', 'LiveController@lastTR')->name('wms.lastTR');
+Route::get('wms/live/lastSound', 'LiveController@lastSound')->name('wms.lastSound');
+Route::get('wms/live/lastWS', 'LiveController@lastWS')->name('wms.lastWS');
 
 //TABLES
 

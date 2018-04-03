@@ -213,6 +213,7 @@ class LiveController extends Controller
         ->value('c_time');
     $lastDate = date("d F Y H:i:s", strtotime($lastDate));
 
+    $date = date('Y-m-d H:i:s');
 
     return view('wms.live')
         ->with('stationsArray', $stationsArray)
@@ -227,6 +228,7 @@ class LiveController extends Controller
         ->with('wind_dataFinal', json_encode($wind_dataFinal,JSON_NUMERIC_CHECK))
         ->with('dir_dataFinal', json_encode($dir_dataFinal,JSON_NUMERIC_CHECK))
         ->with('lastDate', json_encode($lastDate,JSON_NUMERIC_CHECK))
+        ->with('date', json_encode($date,JSON_NUMERIC_CHECK))
         ;
   }
 
@@ -236,17 +238,95 @@ class LiveController extends Controller
                 ->orderBy('c_time', 'desc')
                 ->select('c_time','c_value')
                 ->limit(1)
-                ->pluck('c_value','c_time');
+                ->get('c_value','c_time');
 
-    $last_temp_final = array();
-
-    foreach ($last_temp as $key => $val) {
-      $last_temp_final = array(strtotime($key)*1000, $val);
-    }
+    // $last_temp_final = array();
+    //
+    // foreach ($last_temp as $key => $val) {
+    //   $last_temp_final = array(
+    //     "time" => strtotime($key)*1000,
+    //     "value" => $val);
+    // }
 
     return view('wms.lastTemp')
-          ->with('last_temp_final', json_encode($last_temp_final,JSON_NUMERIC_CHECK))
-          ->with('last_temp', json_encode($last_temp,JSON_NUMERIC_CHECK));;
+          // >with('last_temp_final', json_encode($last_temp_final,JSON_NUMERIC_CHECK))
+          //->with('last_temp', json_encode($last_temp,JSON_NUMERIC_CHECK));
+          ->with('last_temp', json_encode($last_temp,JSON_NUMERIC_CHECK));
 
+  }
+
+  public function lastPres(){
+    $last_pres = DB::table('t_sensor_data')
+                ->where('c_sensed_parameter', '=', 'Pressure')
+                ->orderBy('c_time', 'desc')
+                ->select('c_time','c_value')
+                ->limit(1)
+                ->get('c_value','c_time');
+
+    return view('wms.lastPres')
+          ->with('last_pres', json_encode($last_pres,JSON_NUMERIC_CHECK));
+
+  }
+
+  public function lastHum(){
+    $last_hum = DB::table('t_sensor_data')
+                ->where('c_sensed_parameter', '=', 'Humidity')
+                ->orderBy('c_time', 'desc')
+                ->select('c_time','c_value')
+                ->limit(1)
+                ->get('c_value','c_time');
+
+    return view('wms.lastHum')
+          ->with('last_hum', json_encode($last_hum,JSON_NUMERIC_CHECK));
+
+  }
+
+  public function lastRR(){
+    $last_RR = DB::table('t_sensor_data')
+                ->where('c_sensed_parameter', '=', 'Rain rate')
+                ->orderBy('c_time', 'desc')
+                ->select('c_time','c_value')
+                ->limit(1)
+                ->get('c_value','c_time');
+
+    return view('wms.lastRR')
+          ->with('last_RR', json_encode($last_RR,JSON_NUMERIC_CHECK));
+
+  }
+
+  public function lastTR(){
+    $last_TR = DB::table('t_sensor_data')
+                ->where('c_sensed_parameter', '=', 'Total rain')
+                ->orderBy('c_time', 'desc')
+                ->select('c_time','c_value')
+                ->limit(1)
+                ->get('c_value','c_time');
+
+    return view('wms.lastTR')
+          ->with('last_TR', json_encode($last_TR,JSON_NUMERIC_CHECK));
+  }
+
+  public function lastSound(){
+    $last_sound = DB::table('t_sensor_data')
+                ->where('c_sensed_parameter', '=', 'Sound level')
+                ->orderBy('c_time', 'desc')
+                ->select('c_time','c_value')
+                ->limit(1)
+                ->get('c_value','c_time');
+
+    return view('wms.lastSound')
+          ->with('last_sound', json_encode($last_sound,JSON_NUMERIC_CHECK));
+  }
+
+  public function lastWS(){
+    $last_WS = DB::table('t_sensor_data')
+                ->where('c_sensed_parameter', '=', 'Wind speed')
+                ->orderBy('c_time', 'desc')
+                ->select('c_time','c_value')
+                ->limit(1)
+                ->get('c_value','c_time');
+
+    return view('wms.lastWS')
+          ->with('last_WS', json_encode($last_WS,JSON_NUMERIC_CHECK));
   }
 }
