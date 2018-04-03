@@ -33,7 +33,7 @@
           <button type=submit name="parameter" value="Sound level" id="sound_level_button" class="btn btn-info pull-left" style="background-color:#5d9190; border:none">Sound level</button>
           <button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#5e8692; border:none">Wind speed</button>
           <button type=submit name="parameter" value="Rain rate" id="rain_rate_button" class="btn btn-info pull-left" style="background-color:#586d92; border:none">Rain rate</button>
-          <button type=submit name="parameter" value="Total rain" id="tota_rain_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none">Total rain</button>
+          <button type=submit name="parameter" value="Total rain" id="tota_rain_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none">Daily rainfall</button>
           <!-- <button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#4f6283; border:none;">Wind Direction</button> -->
           </form>
           <div style="margin-top: 4em" class="mx-auto" id="heatmap-demo" width="100%" height="50"> </div>
