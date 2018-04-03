@@ -21,7 +21,9 @@
               <h5>{{ Auth::user()->email}}</h5>
               <?php
                 $timezone = date_default_timezone_get();
-                echo "The current server timezone is: " . $timezone;
+                $date = date("Y-m-d H:i:s");
+                echo "The current server timezone is: " . $timezone .  "</br>";
+                echo "Today is " . $date;
               ?>
         </div>
 
