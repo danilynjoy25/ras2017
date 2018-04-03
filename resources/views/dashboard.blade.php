@@ -19,6 +19,10 @@
               <h1>{{Auth::user()->name}}</h1>
               <h4>{{ Auth::user()->getRoleNames()->implode(',')}}</h4>
               <h5>{{ Auth::user()->email}}</h5>
+              <?php
+                $timezone = date_default_timezone_get();
+                echo "The current server timezone is: " . $timezone;
+              ?>
         </div>
 
       </div>
