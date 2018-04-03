@@ -56,7 +56,7 @@ var url;
                  console.log(date);
                }
           });
-           setTimeout(getData, 5000);
+           setTimeout(getData, 1000);
       };
 
       var config = {
