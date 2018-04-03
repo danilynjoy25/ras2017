@@ -95,6 +95,13 @@ var chart;
   // }
 
   $(document).ready(function(){
+    
+      Highcharts.setOptions({
+        global: {
+          useUTC: false
+        }
+      });
+
       var temp_data = <?php echo $temp_dataFinal; ?>;
       var hum_data = <?php echo $hum_dataFinal; ?>;
       var wind_data = <?php echo $wind_dataFinal; ?>;
