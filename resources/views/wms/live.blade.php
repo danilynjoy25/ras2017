@@ -109,9 +109,14 @@ var url;
                         y: 100,
                         // shadow: true
                     },
-
                     rangeSelector: {
                         selected: 1
+                    },
+                    yAxis: {
+                      tickPositioner: function() {
+                        return [this.dataMin, this.dataMax];
+                      },
+                      visible: false
                     },
                     series: [{
                         name: "Temperature",
@@ -121,6 +126,7 @@ var url;
                         tooltip: {
                             valueDecimals: 2,
                             valueSuffix: " °C"
+
                         },
                         fillColor: {
                             linearGradient: {

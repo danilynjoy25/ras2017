@@ -70,9 +70,9 @@
 <button type=submit name="parameter" value="Rain rate" id="rain_rate_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Rain rate</button>
 <button type=submit name="parameter" value="Total rain" id="total_rain_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Total rain</button>
 <button type=submit name="parameter" value="Sound level" id="sound_level_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Sound level</button>
-<button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind speed</button> -->
-<!-- <button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind Direction</button> -->
-</form>
+<button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind speed</button>
+<button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind Direction</button>
+</form> -->
 </div>
 
 <script type="text/javascript">
@@ -95,7 +95,7 @@ var chart;
   // }
 
   $(document).ready(function(){
-    
+
       Highcharts.setOptions({
         global: {
           useUTC: false
@@ -175,7 +175,12 @@ var chart;
                         y: 100,
                         // shadow: true
                     },
-
+                    yAxis: {
+                      tickPositioner: function() {
+                        return [this.dataMin, this.dataMax];
+                      },
+                      visible: false
+                    },
                     rangeSelector: {
                         selected: 1
                     },
