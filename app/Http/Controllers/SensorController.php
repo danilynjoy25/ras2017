@@ -59,6 +59,9 @@ class SensorController extends Controller
 
        $sensor = \App\Models\Sensor::create(['c_type'=>$type, 'c_name' => $name]);
 
+       activity()
+       ->log('Sensor ' . $name . ' for ' . $type . ' created');
+
        return redirect()->route('sensors.index')
            ->with('flash_message', 'Sensor
             '. $sensor->c_name.' created successfully.');
@@ -110,6 +113,9 @@ class SensorController extends Controller
        $sensor->c_name = $request->input('name');
        $sensor->save();
 
+       activity()
+       ->log('Sensor ' . $sensor->c_type . ' for ' . $sensor->c_type . ' updated');
+
        return redirect()->route('sensors.index',$sensor->c_id)
            ->with('flash_message','Sensor '. $sensor->c_name.' updated successfully.');
    }
@@ -124,6 +130,9 @@ class SensorController extends Controller
    {
        $sensor = \App\Models\Sensor::findOrFail($id);
        $sensor->delete();
+
+       activity()
+       ->log('Sensor ' . $sensor->c_name . ' deleted');
 
        return redirect()->route('sensors.index')
            ->with('flash_message',

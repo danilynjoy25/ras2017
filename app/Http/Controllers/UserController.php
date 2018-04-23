@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasRoles;
 use Session;
+use Spatie\Activitylog\Models\Activity;
 
 class UserController extends Controller
 {
@@ -70,6 +71,10 @@ class UserController extends Controller
             }
         }
 
+        activity()
+        ->performedOn($user)
+        ->log('User ' . $user->name . ' created');
+
         return redirect()->route('users.index')
             ->with('flash_message',
              'User successfully added.');
@@ -96,6 +101,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::get();
+
+        activity()
+        ->performedOn($user)
+        ->log('User ' . $user->name . ' edited');
 
         return view('users.edit', compact('user', 'roles'));
     }
@@ -141,6 +150,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+        activity()
+        ->performedOn($user)
+        ->log('User ' . $user->name . ' deleted');
 
         return redirect()->route('users.index')
             ->with('flash_message',

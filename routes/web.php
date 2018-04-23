@@ -52,6 +52,7 @@ Route::get('dashboard',
   }
 );
 
+Route::get('dashboard/logs', 'DashboardController@logs')->name('dashboard.logs')->middleware('auth');
 Route::get('dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
 
 //WMS ROUTES
@@ -77,6 +78,9 @@ Route::get('wms/live/lastWS', 'LiveController@lastWS')->name('wms.lastWS');
 //TABLES
 
 Route::get('wms/tables', 'WMSController@tables')->name('wms.tables');
+
+//EXPORT
+Route::get('wms/export', 'WMSController@exportData')->name('wms.exportData');
 
 //DMS ROUTES
 Route::get('dms', function () {return view('dms.home');} )->name('dms.home');

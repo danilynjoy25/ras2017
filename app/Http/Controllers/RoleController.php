@@ -10,6 +10,7 @@ use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Session;
+use Activity;
 
 class RoleController extends Controller
 {
@@ -64,6 +65,9 @@ class RoleController extends Controller
             $role = Role::where('name', '=', $name)->first();
             $role->givePermissionTo($p);
         }
+
+        activity()
+        ->log('Role ' . $name . ' created');
 
         return redirect()->route('roles.index')
             ->with('flash_message',
@@ -124,6 +128,9 @@ class RoleController extends Controller
             $role->givePermissionTo($p);
         }
 
+        activity()
+        ->log('Role  ' . $role->name . ' updated');
+
         return redirect()->route('roles.index')
             ->with('flash_message',
              'Role'. $role->name.' updated!');
@@ -139,6 +146,9 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->delete();
+
+        activity()
+        ->log('Role  ' . $role->name . ' deleted');
 
         return redirect()->route('roles.index')
             ->with('flash_message',

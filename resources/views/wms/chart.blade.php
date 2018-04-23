@@ -73,6 +73,8 @@
 <button type=submit name="parameter" value="Wind speed" id="wind_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind speed</button>
 <button type=submit name="parameter" value="Wind direction" id="dir_button" class="btn btn-info pull-left" style="background-color:#E5E5E5; border:none">Wind Direction</button>
 </form> -->
+
+<a href="{{ route('wms.exportData') }}" class="btn btn-info pull-left" style="margin-right: 3px;">Download data</a>
 </div>
 
 <script type="text/javascript">
@@ -145,16 +147,16 @@ var chart;
                             compare: 'percent',
                             showInNavigator: true,
                             events: {
-                              legendItemClick: function(event) {
-                                  var selected = this.index;
-                                  var allSeries = this.chart.series;
-
-                                  $.each(allSeries, function(index, series) {
-                                      selected == index ? series.show() : series.hide();
-                                  });
-
-                                  return false;
-                              }
+                              // legendItemClick: function(event) {
+                              //     var selected = this.index;
+                              //     var allSeries = this.chart.series;
+                              //
+                              //     $.each(allSeries, function(index, series) {
+                              //         selected == index ? series.show() : series.hide();
+                              //     });
+                              //
+                              //     return false;
+                              // },
                           }
                         }
                     },
@@ -179,10 +181,10 @@ var chart;
                       tickPositioner: function() {
                         return [this.dataMin, this.dataMax];
                       },
-                      visible: false
+                      visible: false,
                     },
                     rangeSelector: {
-                        selected: 1
+                        selected: 5,
                     },
                     series: [{
                         name: "Temperature",
@@ -232,7 +234,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                     {
                         name: "Humidity",
@@ -256,7 +258,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[2]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                     {
                         name: "Rain rate",
@@ -281,7 +283,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                     {
                         name: "Daily rainfall",
@@ -304,7 +306,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                     {
                         name: "Sound level",
@@ -327,7 +329,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                     {
                         name: "Wind speed",
@@ -351,7 +353,7 @@ var chart;
                                 [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
                             ]
                         },
-                        visible: false
+                        visible: true
                     },
                   ]
 

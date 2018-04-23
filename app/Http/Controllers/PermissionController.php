@@ -72,6 +72,9 @@ class PermissionController extends Controller
             }
         }
 
+        activity()
+        ->log('Permission  ' . $permission->name . ' created');
+
         return redirect()->route('permissions.index')
             ->with('flash_message',
              'Permission '. $permission->name.' added!');
@@ -119,6 +122,9 @@ class PermissionController extends Controller
         $input = $request->all();
         $permission->fill($input)->save();
 
+        activity()
+        ->log('Permission ' . $permission->name . ' updated');
+
         return redirect()->route('permissions.index')
             ->with('flash_message',
              'Permission'. $permission->name.' updated!');
@@ -141,6 +147,9 @@ class PermissionController extends Controller
         }
 
         $permission->delete();
+
+        activity()
+        ->log('Permission  ' . $permission->name . ' deleted');
 
         return redirect()->route('permissions.index')
             ->with('flash_message',

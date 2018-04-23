@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\APIController;
 use Session;
+use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
@@ -45,6 +46,14 @@ class DashboardController extends Controller
               ->with('sensors', $sensors)
               ->with('lastDateUser', $lastDateUser)
               ->with('lastDateSensor', $lastDateSensor);
+    }
+
+    public function logs(){
+
+      $activities = Activity::all();
+
+      return view('logs')
+             ->with('activities', $activities);
     }
 
 }
